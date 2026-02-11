@@ -1,21 +1,11 @@
 import { canvasManager } from "./canvasManager.js";
 import { bindListeners, inputState } from "./input/inputState.js";
-import {
-  EAST,
-  GAMEHEIGHT,
-  GAMEWIDTH,
-  LEFT,
-  NORTH,
-  RIGHT,
-  SOUTH,
-  WEST,
-} from "./global.js";
+import { EAST, LEFT, NORTH, RIGHT, SOUTH, WEST } from "./global.js";
 import type { Action } from "./action.js";
 import { timerManager } from "./timer/timerManager.js";
 import { loadMap, mapMatrix } from "./map/map.js";
 import Position from "./gameElements/position.js";
 import { gameState } from "./gameState.js";
-import { tileSheetPosList } from "./map/textureSheetMapping.js";
 import type { Tile } from "./map/tile.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
@@ -162,21 +152,9 @@ export default class GameManager {
     return tiles;
   }
 
-  renderTileView(tiles: (Tile | null)[]) {
+  renderTiles(tiles: (Tile | null)[]) {
     tiles.forEach((tile, i) => {
-      const sheetPos = tileSheetPosList[i];
-      if (!tile || !sheetPos) {
-        return;
-      }
-      canvasManager.renderSpriteFromSheet(
-        tile.spriteSheet,
-        new Position(),
-        GAMEWIDTH,
-        GAMEHEIGHT,
-        sheetPos,
-        128,
-        128,
-      );
+      tile?.render(i);
     });
   }
 
@@ -203,6 +181,6 @@ export default class GameManager {
     if (!this.mapLoaded) {
       return;
     }
-    this.renderTileView(this.tileView);
+    this.renderTiles(this.tileView);
   }
 }

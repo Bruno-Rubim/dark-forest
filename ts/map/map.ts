@@ -1,5 +1,5 @@
 import { gameState } from "../gameState";
-import { tileDict, type Tile } from "./tile";
+import { tileFactory, type Tile } from "./tile";
 
 export const mapMatrix: (Tile | null)[][] = [];
 
@@ -34,30 +34,31 @@ function handleTile(x: number, y: number, r: number, g: number, b: number) {
   const pixelValue = "" + r + g + b;
 
   let tile: Tile | null = null;
+  const alt = x % 2 == y % 2;
   switch (pixelValue) {
     case "000":
       // tile = tileDict.black;
       break;
     case "255255255":
-      tile = tileDict.white;
+      tile = tileFactory.createTile("white", alt);
       break;
     case "2551190":
-      tile = tileDict.orange;
+      tile = tileFactory.createTile("orange", alt);
       break;
     case "0255119":
-      tile = tileDict.green;
+      tile = tileFactory.createTile("green", alt);
       break;
     case "0119255":
-      tile = tileDict.blue;
+      tile = tileFactory.createTile("blue", alt);
       break;
     case "2550119":
-      tile = tileDict.red;
+      tile = tileFactory.createTile("red", alt);
       break;
     case "3610936":
-      tile = tileDict.grass;
+      tile = tileFactory.createTile("grass", alt);
       break;
     case "146146146":
-      tile = tileDict.rock;
+      tile = tileFactory.createTile("rock", alt);
       break;
     default:
       console.log(pixelValue);

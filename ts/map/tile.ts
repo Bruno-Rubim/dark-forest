@@ -1,51 +1,126 @@
+import { canvasManager } from "../canvasManager";
+import Position from "../gameElements/position";
+import { GAMEHEIGHT, GAMEWIDTH } from "../global";
 import { sprites, type Sprite } from "../sprites";
+import { tileSheetPosList } from "./textureSheetMapping";
 
 export class Tile {
   spriteSheet: Sprite;
+  shadowSpriteSheet: Sprite;
+  altSpriteSheet: Sprite | null;
   name: string;
   colision: boolean;
+  alt: boolean;
 
-  constructor(args: { spriteSheet: Sprite; name: string; colision: boolean }) {
+  constructor(args: {
+    spriteSheet: Sprite;
+    shadowSpriteSheet: Sprite;
+    name: string;
+    colision: boolean;
+    alt: boolean;
+    altSpriteSheet?: Sprite;
+  }) {
     this.spriteSheet = args.spriteSheet;
+    this.shadowSpriteSheet = args.shadowSpriteSheet;
     this.name = args.name;
     this.colision = args.colision;
+    this.alt = args.alt;
+    this.altSpriteSheet = args.altSpriteSheet ?? null;
+  }
+  render(queueNum: number) {
+    const sheetPos = tileSheetPosList[queueNum];
+    if (!sheetPos) {
+      return;
+    }
+    let spriteSheet = this.spriteSheet;
+    if (this.alt && this.altSpriteSheet) {
+      spriteSheet = this.altSpriteSheet;
+    }
+    canvasManager.renderSpriteFromSheet(
+      spriteSheet,
+      new Position(),
+      GAMEWIDTH,
+      GAMEHEIGHT,
+      sheetPos,
+      128,
+      128,
+    );
+    canvasManager.renderSpriteFromSheet(
+      this.shadowSpriteSheet,
+      new Position(),
+      GAMEWIDTH,
+      GAMEHEIGHT,
+      sheetPos,
+      128,
+      128,
+    );
   }
 }
 
-export const tileDict = {
-  rock: new Tile({
-    spriteSheet: sprites.texture_rock,
-    name: "rock",
-    colision: true,
-  }),
-  grass: new Tile({
-    spriteSheet: sprites.texture_grass,
-    name: "grass",
-    colision: false,
-  }),
-  blue: new Tile({
-    spriteSheet: sprites.texture_blue,
-    name: "blue",
-    colision: false,
-  }),
-  green: new Tile({
-    spriteSheet: sprites.texture_green,
-    name: "green",
-    colision: true,
-  }),
-  red: new Tile({
-    spriteSheet: sprites.texture_red,
-    name: "red",
-    colision: true,
-  }),
-  orange: new Tile({
-    spriteSheet: sprites.texture_orange,
-    name: "orange",
-    colision: true,
-  }),
-  white: new Tile({
-    spriteSheet: sprites.texture_white,
-    name: "white",
-    colision: true,
-  }),
-};
+class TileFactory {
+  createTile(name: string, alt: boolean): Tile | null {
+    switch (name) {
+      case "rock":
+        return new Tile({
+          spriteSheet: sprites.texture_rock,
+          altSpriteSheet: sprites.texture_rock_alt,
+          shadowSpriteSheet: sprites.texture_shadow_block,
+          name: "rock",
+          colision: true,
+          alt: alt,
+        });
+      case "grass":
+        return new Tile({
+          spriteSheet: sprites.texture_grass,
+          shadowSpriteSheet: sprites.texture_shadow_gound,
+          altSpriteSheet: sprites.texture_grass_alt,
+          name: "grass",
+          colision: false,
+          alt: alt,
+        });
+      case "blue":
+        return new Tile({
+          shadowSpriteSheet: sprites.texture_shadow_gound,
+          spriteSheet: sprites.texture_blue,
+          name: "blue",
+          colision: false,
+          alt: alt,
+        });
+      case "green":
+        return new Tile({
+          spriteSheet: sprites.texture_green,
+          shadowSpriteSheet: sprites.texture_shadow_block,
+          name: "green",
+          colision: true,
+          alt: alt,
+        });
+      case "red":
+        return new Tile({
+          spriteSheet: sprites.texture_red,
+          shadowSpriteSheet: sprites.texture_shadow_block,
+          name: "red",
+          colision: true,
+          alt: alt,
+        });
+      case "orange":
+        return new Tile({
+          spriteSheet: sprites.texture_orange,
+          shadowSpriteSheet: sprites.texture_shadow_block,
+          name: "orange",
+          colision: true,
+          alt: alt,
+        });
+      case "white":
+        return new Tile({
+          spriteSheet: sprites.texture_white,
+          shadowSpriteSheet: sprites.texture_shadow_block,
+          name: "white",
+          colision: true,
+          alt: alt,
+        });
+    }
+    return null;
+  }
+}
+
+export const tileFactory = new TileFactory();
