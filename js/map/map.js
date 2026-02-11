@@ -20,37 +20,9 @@ function handleTile(x, y, r, g, b) {
     if (!mapMatrix[y]) {
         mapMatrix[y] = [];
     }
-    const pixelValue = "" + r + g + b;
-    let tile = null;
+    const colorValue = "" + r + g + b;
     const alt = x % 2 == y % 2;
-    switch (pixelValue) {
-        case "000":
-            break;
-        case "255255255":
-            tile = tileFactory.createTile("white", alt);
-            break;
-        case "2551190":
-            tile = tileFactory.createTile("orange", alt);
-            break;
-        case "0255119":
-            tile = tileFactory.createTile("green", alt);
-            break;
-        case "0119255":
-            tile = tileFactory.createTile("blue", alt);
-            break;
-        case "2550119":
-            tile = tileFactory.createTile("red", alt);
-            break;
-        case "3610936":
-            tile = tileFactory.createTile("grass", alt);
-            break;
-        case "146146146":
-            tile = tileFactory.createTile("rock", alt);
-            break;
-        default:
-            console.log(pixelValue);
-    }
-    mapMatrix[y][x] = tile;
+    mapMatrix[y][x] = tileFactory.createTile(colorValue, alt);
 }
 export async function loadMap() {
     await loadMapFromImage("./images/map-test.png", (data, width, height) => {
