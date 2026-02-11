@@ -1,0 +1,12 @@
+export const GAMEWIDTH = 256;
+export const GAMEHEIGHT = 256;
+export const RIGHT = "right";
+export const LEFT = "left";
+export const CENTER = "center";
+export const CLICKRIGHT = "right";
+export const CLICKLEFT = "left";
+export const NORTH = "north";
+export const SOUTH = "south";
+export const EAST = "east";
+export const WEST = "west";
+export const DEV = localStorage.getItem("is_dev") == "true";
