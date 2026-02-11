@@ -10,6 +10,13 @@ export const CLICKLEFT = "left";
 
 export type cursorClick = typeof CLICKRIGHT | typeof CLICKLEFT;
 
+export const NORTH = "north";
+export const SOUTH = "south";
+export const EAST = "east";
+export const WEST = "west";
+
+export type Cardinals = typeof NORTH | typeof SOUTH | typeof EAST | typeof WEST;
+
 export const DEV = localStorage.getItem("is_dev") == "true";
 // Run one of the next lines to turn dev settings on or off
 // localStorage.setItem("is_dev", "true");

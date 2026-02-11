@@ -1,4 +1,4 @@
-import GameManager from "./gameManager.js";
+import GameManager from "./gameManager";
 
 export const gameManager = new GameManager();
 

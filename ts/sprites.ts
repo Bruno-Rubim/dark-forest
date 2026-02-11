@@ -23,6 +23,11 @@ export class Sprite {
 
 export const sprites = {
   "9s": new Sprite("9s"),
+  texture_blue: new Sprite("texture_blue"),
+  texture_green: new Sprite("texture_green"),
+  texture_white: new Sprite("texture_white"),
+  texture_red: new Sprite("texture_red"),
+  texture_orange: new Sprite("texture_orange"),
 };
 
 const spriteArr = Object.values(sprites);

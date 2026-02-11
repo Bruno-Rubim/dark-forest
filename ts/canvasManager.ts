@@ -6,7 +6,7 @@ import { utils } from "./utils.js";
 import timeTracker from "./timer/timeTracker.js";
 
 export default class CanvasManager {
-  canvasElement = document.querySelector("canvas")!;
+  canvasElement = document.querySelector("#game-canvas") as HTMLCanvasElement;
   ctx = this.canvasElement?.getContext("2d")!;
   renderScale = 1;
   scaleMultiplyer = 1;
@@ -16,6 +16,7 @@ export default class CanvasManager {
     width: 0,
     height: 0,
   };
+  roundScale: boolean = false;
 
   constructor() {
     // Binds updating the elmeent size when the window resizes
@@ -31,9 +32,15 @@ export default class CanvasManager {
   updateElementSize() {
     let scale = 0;
     if (innerWidth > innerHeight) {
-      scale = Math.floor(innerHeight / this.sizeConfig.originalHeight);
+      scale = innerHeight / this.sizeConfig.originalHeight;
+      if (this.roundScale) {
+        scale = Math.floor(scale);
+      }
     } else {
-      scale = Math.floor(innerWidth / this.sizeConfig.originalWidth);
+      scale = innerWidth / this.sizeConfig.originalWidth;
+      if (this.roundScale) {
+        scale = Math.floor(scale);
+      }
     }
     this.sizeConfig.width = scale * this.sizeConfig.originalWidth;
     this.sizeConfig.height = scale * this.sizeConfig.originalHeight;
