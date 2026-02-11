@@ -14,9 +14,9 @@ import type { Action } from "./action.js";
 import { timerManager } from "./timer/timerManager.js";
 import { loadMap, mapMatrix } from "./map/map.js";
 import Position from "./gameElements/position.js";
-import { Sprite, sprites } from "./sprites.js";
 import { gameState } from "./gameState.js";
 import { tileSheetPosList } from "./map/textureSheetMapping.js";
+import type { Tile } from "./map/tile.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
 export default class GameManager {
@@ -98,7 +98,7 @@ export default class GameManager {
   }
 
   get tileView() {
-    const tiles: { texture: string }[] = [];
+    const tiles: (Tile | null)[] = [];
     let relPosList: Position[] = [];
     let startingTile: Position;
     switch (gameState.player.facingCard) {
@@ -152,52 +152,24 @@ export default class GameManager {
         break;
     }
     relPosList.forEach((p) => {
-      let texture = "black";
+      let tile = null;
       const col = mapMatrix[startingTile.y + p.y];
       if (col && col[startingTile.x + p.x]) {
-        texture = col[startingTile.x + p.x];
+        tile = col[startingTile.x + p.x];
       }
-      tiles.push({
-        texture: texture,
-      });
+      tiles.push(tile);
     });
     return tiles;
   }
 
-  renderTileView(tiles: { texture: string }[]) {
+  renderTileView(tiles: (Tile | null)[]) {
     tiles.forEach((tile, i) => {
-      let sprite: Sprite | null = null;
-      switch (tile.texture) {
-        case "black":
-          return;
-        case "white":
-          sprite = sprites.texture_white;
-          break;
-        case "red":
-          sprite = sprites.texture_red;
-          break;
-        case "blue":
-          sprite = sprites.texture_blue;
-          break;
-        case "green":
-          sprite = sprites.texture_green;
-          break;
-        case "orange":
-          sprite = sprites.texture_orange;
-          break;
-        case "grass":
-          sprite = sprites.texture_grass;
-          break;
-        case "rock":
-          sprite = sprites.texture_rock;
-          break;
-      }
       const sheetPos = tileSheetPosList[i];
-      if (!sprite || !sheetPos) {
+      if (!tile || !sheetPos) {
         return;
       }
       canvasManager.renderSpriteFromSheet(
-        sprite,
+        tile.spriteSheet,
         new Position(),
         GAMEWIDTH,
         GAMEHEIGHT,

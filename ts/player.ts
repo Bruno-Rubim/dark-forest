@@ -8,16 +8,37 @@ import {
   WEST,
   type Cardinals,
 } from "./global";
+import { mapMatrix } from "./map/map";
+import type { Tile } from "./map/tile";
 
 export class Player {
   pos: Position;
-  facing = 3;
+  facing = 0;
   constructor(pos: Position) {
     this.pos = pos;
   }
 
   get facingCard(): Cardinals {
     return [NORTH, EAST, SOUTH, WEST][this.facing] as Cardinals;
+  }
+
+  getBlockAdj(dir: Cardinals): Tile | null {
+    let tile = null;
+    switch (dir) {
+      case NORTH:
+        tile = mapMatrix[this.pos.y - 1]?.[this.pos.x];
+        break;
+      case SOUTH:
+        tile = mapMatrix[this.pos.y + 1]?.[this.pos.x];
+        break;
+      case EAST:
+        tile = mapMatrix[this.pos.y]?.[this.pos.x + 1];
+        break;
+      case WEST:
+        tile = mapMatrix[this.pos.y]?.[this.pos.x - 1];
+        break;
+    }
+    return tile;
   }
 
   turn(side: typeof LEFT | typeof RIGHT) {
@@ -32,16 +53,44 @@ export class Player {
   move(dir: "forawrds" | "backwards") {
     switch (this.facingCard) {
       case NORTH:
-        this.pos = this.pos.add(0, dir == "forawrds" ? -1 : 1);
+        if (dir == "forawrds" && this.getBlockAdj(NORTH)?.colision != true) {
+          this.pos = this.pos.add(0, -1);
+        } else if (
+          dir == "backwards" &&
+          this.getBlockAdj(SOUTH)?.colision != true
+        ) {
+          this.pos = this.pos.add(0, 1);
+        }
         break;
       case SOUTH:
-        this.pos = this.pos.add(0, dir == "forawrds" ? 1 : -1);
+        if (dir == "forawrds" && this.getBlockAdj(SOUTH)?.colision != true) {
+          this.pos = this.pos.add(0, 1);
+        } else if (
+          dir == "backwards" &&
+          this.getBlockAdj(NORTH)?.colision != true
+        ) {
+          this.pos = this.pos.add(0, -1);
+        }
         break;
       case EAST:
-        this.pos = this.pos.add(dir == "forawrds" ? 1 : -1, 0);
+        if (dir == "forawrds" && this.getBlockAdj(EAST)?.colision != true) {
+          this.pos = this.pos.add(1, 0);
+        } else if (
+          dir == "backwards" &&
+          this.getBlockAdj(WEST)?.colision != true
+        ) {
+          this.pos = this.pos.add(-1, 0);
+        }
         break;
       case WEST:
-        this.pos = this.pos.add(dir == "forawrds" ? -1 : 1, 0);
+        if (dir == "forawrds" && this.getBlockAdj(WEST)?.colision != true) {
+          this.pos = this.pos.add(-1, 0);
+        } else if (
+          dir == "backwards" &&
+          this.getBlockAdj(EAST)?.colision != true
+        ) {
+          this.pos = this.pos.add(1, 0);
+        }
         break;
     }
   }

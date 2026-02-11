@@ -1,6 +1,7 @@
 import { gameState } from "../gameState";
+import { tileDict, type Tile } from "./tile";
 
-export const mapMatrix: string[][] = [];
+export const mapMatrix: (Tile | null)[][] = [];
 
 async function loadMapFromImage(
   imageSrc: string,
@@ -32,34 +33,34 @@ function handleTile(x: number, y: number, r: number, g: number, b: number) {
 
   const pixelValue = "" + r + g + b;
 
-  let tile = pixelValue;
-  switch (tile) {
+  let tile: Tile | null = null;
+  switch (pixelValue) {
+    case "000":
+      // tile = tileDict.black;
+      break;
     case "255255255":
-      tile = "white";
+      tile = tileDict.white;
       break;
     case "2551190":
-      tile = "orange";
+      tile = tileDict.orange;
       break;
     case "0255119":
-      tile = "green";
+      tile = tileDict.green;
       break;
     case "0119255":
-      tile = "blue";
+      tile = tileDict.blue;
       break;
     case "2550119":
-      tile = "red";
-      break;
-    case "000":
-      tile = "black";
+      tile = tileDict.red;
       break;
     case "3610936":
-      tile = "grass";
+      tile = tileDict.grass;
       break;
     case "146146146":
-      tile = "rock";
+      tile = tileDict.rock;
       break;
     default:
-      console.log(tile);
+      console.log(pixelValue);
   }
 
   mapMatrix[y][x] = tile;
