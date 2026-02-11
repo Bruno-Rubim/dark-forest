@@ -52,6 +52,11 @@ function handleTile(x: number, y: number, r: number, g: number, b: number) {
     case "000":
       tile = "black";
       break;
+    case "3610936":
+      tile = "grass";
+      break;
+    default:
+      console.log(tile);
   }
 
   mapMatrix[y][x] = tile;
@@ -71,7 +76,7 @@ export async function loadMap() {
       }
     }
   });
-  gameState.playerPos.update(
+  gameState.player.pos.update(
     Math.floor(mapMatrix[0].length / 2),
     Math.floor(mapMatrix.length / 2),
   );

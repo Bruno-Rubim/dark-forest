@@ -1,13 +1,22 @@
 import { canvasManager } from "./canvasManager.js";
 import { bindListeners, inputState } from "./input/inputState.js";
-import { GAMEHEIGHT, GAMEWIDTH } from "./global.js";
+import {
+  EAST,
+  GAMEHEIGHT,
+  GAMEWIDTH,
+  LEFT,
+  NORTH,
+  RIGHT,
+  SOUTH,
+  WEST,
+} from "./global.js";
 import type { Action } from "./action.js";
 import { timerManager } from "./timer/timerManager.js";
 import { loadMap, mapMatrix } from "./map/map.js";
 import Position from "./gameElements/position.js";
 import { Sprite, sprites } from "./sprites.js";
 import { gameState } from "./gameState.js";
-import { tileSheetPosFromRelPos } from "./map/textureSheetMapping.js";
+import { tileSheetPosList } from "./map/textureSheetMapping.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
 export default class GameManager {
@@ -68,59 +77,95 @@ export default class GameManager {
     }
     if (inputState.keyboard.w == "pressed") {
       inputState.keyboard.w = "read";
-      gameState.playerPos = gameState.playerPos.add(0, -1);
-      return;
-    }
-    if (inputState.keyboard.a == "pressed") {
-      inputState.keyboard.a = "read";
-      gameState.playerPos = gameState.playerPos.add(-1, 0);
+      gameState.player.move("forawrds");
       return;
     }
     if (inputState.keyboard.s == "pressed") {
       inputState.keyboard.s = "read";
-      gameState.playerPos = gameState.playerPos.add(0, 1);
+      gameState.player.move("backwards");
+      return;
+    }
+    if (inputState.keyboard.a == "pressed") {
+      inputState.keyboard.a = "read";
+      gameState.player.turn(LEFT);
       return;
     }
     if (inputState.keyboard.d == "pressed") {
       inputState.keyboard.d = "read";
-      gameState.playerPos = gameState.playerPos.add(1, 0);
+      gameState.player.turn(RIGHT);
       return;
     }
   }
 
   get tileView() {
-    const startingTile = gameState.playerPos.subtract(2, 4);
-    const tiles: { relPos: Position; texture: string }[] = [];
+    const tiles: { texture: string }[] = [];
     let relPosList: Position[] = [];
-    for (let y = 0; y < 5; y++) {
-      relPosList.push(
-        new Position(0, y),
-        new Position(4, y),
-        new Position(1, y),
-        new Position(3, y),
-        new Position(2, y),
-      );
+    let startingTile: Position;
+    switch (gameState.player.facingCard) {
+      case NORTH:
+        startingTile = gameState.player.pos.subtract(2, 4);
+        for (let y = 0; y < 5; y++) {
+          relPosList.push(
+            new Position(0, y),
+            new Position(4, y),
+            new Position(1, y),
+            new Position(3, y),
+            new Position(2, y),
+          );
+        }
+        break;
+      case SOUTH:
+        startingTile = gameState.player.pos.add(2, 4);
+        for (let y = 0; y > -5; y--) {
+          relPosList.push(
+            new Position(0, y),
+            new Position(-4, y),
+            new Position(-1, y),
+            new Position(-3, y),
+            new Position(-2, y),
+          );
+        }
+        break;
+      case EAST:
+        startingTile = gameState.player.pos.add(4, -2);
+        for (let x = 0; x > -5; x--) {
+          relPosList.push(
+            new Position(x, 0),
+            new Position(x, 4),
+            new Position(x, 1),
+            new Position(x, 3),
+            new Position(x, 2),
+          );
+        }
+        break;
+      case WEST:
+        startingTile = gameState.player.pos.add(-4, -2);
+        for (let x = 0; x < 5; x++) {
+          relPosList.push(
+            new Position(x, 4),
+            new Position(x, 0),
+            new Position(x, 3),
+            new Position(x, 1),
+            new Position(x, 2),
+          );
+        }
+        break;
     }
     relPosList.forEach((p) => {
+      let texture = "black";
       const col = mapMatrix[startingTile.y + p.y];
-      if (!col) {
-        return;
-      }
-      const texture = col[startingTile.x + p.x];
-      if (!texture) {
-        return;
+      if (col && col[startingTile.x + p.x]) {
+        texture = col[startingTile.x + p.x];
       }
       tiles.push({
         texture: texture,
-        relPos: new Position(p.x, p.y),
       });
     });
-
     return tiles;
   }
 
-  renderTileView(tiles: { relPos: Position; texture: string }[]) {
-    tiles.forEach((tile) => {
+  renderTileView(tiles: { texture: string }[]) {
+    tiles.forEach((tile, i) => {
       let sprite: Sprite | null = null;
       switch (tile.texture) {
         case "black":
@@ -140,8 +185,11 @@ export default class GameManager {
         case "orange":
           sprite = sprites.texture_orange;
           break;
+        case "grass":
+          sprite = sprites.texture_grass;
+          break;
       }
-      const sheetPos = tileSheetPosFromRelPos(tile.relPos);
+      const sheetPos = tileSheetPosList[i];
       if (!sprite || !sheetPos) {
         return;
       }

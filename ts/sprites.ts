@@ -28,6 +28,7 @@ export const sprites = {
   texture_white: new Sprite("texture_white"),
   texture_red: new Sprite("texture_red"),
   texture_orange: new Sprite("texture_orange"),
+  texture_grass: new Sprite("texture_grass"),
 };
 
 const spriteArr = Object.values(sprites);
