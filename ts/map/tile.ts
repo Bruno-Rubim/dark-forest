@@ -58,9 +58,9 @@ export class Tile {
 }
 
 class TileFactory {
-  createTile(name: string, alt: boolean): Tile | null {
-    switch (name) {
-      case "rock":
+  createTile(colorValue: string, alt: boolean): Tile | null {
+    switch (colorValue) {
+      case "146146146":
         return new Tile({
           spriteSheet: sprites.texture_rock,
           altSpriteSheet: sprites.texture_rock_alt,
@@ -69,24 +69,33 @@ class TileFactory {
           colision: true,
           alt: alt,
         });
-      case "grass":
+      case "3610936":
         return new Tile({
           spriteSheet: sprites.texture_grass,
-          shadowSpriteSheet: sprites.texture_shadow_gound,
+          shadowSpriteSheet: sprites.texture_shadow_ground,
           altSpriteSheet: sprites.texture_grass_alt,
           name: "grass",
           colision: false,
           alt: alt,
         });
-      case "blue":
+      case "7310973":
         return new Tile({
-          shadowSpriteSheet: sprites.texture_shadow_gound,
+          spriteSheet: sprites.texture_tree,
+          shadowSpriteSheet: sprites.texture_shadow_tree,
+          name: "tree",
+          colision: true,
+          alt: alt,
+        });
+
+      case "0119255":
+        return new Tile({
+          shadowSpriteSheet: sprites.texture_shadow_ground,
           spriteSheet: sprites.texture_blue,
           name: "blue",
           colision: false,
           alt: alt,
         });
-      case "green":
+      case "0255119":
         return new Tile({
           spriteSheet: sprites.texture_green,
           shadowSpriteSheet: sprites.texture_shadow_block,
@@ -94,7 +103,7 @@ class TileFactory {
           colision: true,
           alt: alt,
         });
-      case "red":
+      case "2550119":
         return new Tile({
           spriteSheet: sprites.texture_red,
           shadowSpriteSheet: sprites.texture_shadow_block,
@@ -102,7 +111,7 @@ class TileFactory {
           colision: true,
           alt: alt,
         });
-      case "orange":
+      case "2551190":
         return new Tile({
           spriteSheet: sprites.texture_orange,
           shadowSpriteSheet: sprites.texture_shadow_block,
@@ -110,7 +119,7 @@ class TileFactory {
           colision: true,
           alt: alt,
         });
-      case "white":
+      case "255255255":
         return new Tile({
           spriteSheet: sprites.texture_white,
           shadowSpriteSheet: sprites.texture_shadow_block,
@@ -119,6 +128,7 @@ class TileFactory {
           alt: alt,
         });
     }
+    console.warn(colorValue + " not in table");
     return null;
   }
 }
