@@ -55,6 +55,9 @@ function handleTile(x: number, y: number, r: number, g: number, b: number) {
     case "3610936":
       tile = "grass";
       break;
+    case "146146146":
+      tile = "rock";
+      break;
     default:
       console.log(tile);
   }

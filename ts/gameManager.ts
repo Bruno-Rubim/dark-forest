@@ -188,6 +188,9 @@ export default class GameManager {
         case "grass":
           sprite = sprites.texture_grass;
           break;
+        case "rock":
+          sprite = sprites.texture_rock;
+          break;
       }
       const sheetPos = tileSheetPosList[i];
       if (!sprite || !sheetPos) {
