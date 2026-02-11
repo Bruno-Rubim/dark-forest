@@ -1,4 +1,4 @@
-import type Position from "./gameElements/position";
+import type Position from "./gameElements/position.js";
 import {
   EAST,
   LEFT,
@@ -7,9 +7,9 @@ import {
   SOUTH,
   WEST,
   type Cardinals,
-} from "./global";
-import { mapMatrix } from "./map/map";
-import type { Tile } from "./map/tile";
+} from "./global.js";
+import { mapMatrix } from "./map/map.js";
+import type { Tile } from "./map/tile.js";
 
 export class Player {
   pos: Position;
@@ -26,16 +26,16 @@ export class Player {
     let tile = null;
     switch (dir) {
       case NORTH:
-        tile = mapMatrix[this.pos.y - 1]?.[this.pos.x];
+        tile = mapMatrix[this.pos.y - 1]?.[this.pos.x] ?? null;
         break;
       case SOUTH:
-        tile = mapMatrix[this.pos.y + 1]?.[this.pos.x];
+        tile = mapMatrix[this.pos.y + 1]?.[this.pos.x] ?? null;
         break;
       case EAST:
-        tile = mapMatrix[this.pos.y]?.[this.pos.x + 1];
+        tile = mapMatrix[this.pos.y]?.[this.pos.x + 1] ?? null;
         break;
       case WEST:
-        tile = mapMatrix[this.pos.y]?.[this.pos.x - 1];
+        tile = mapMatrix[this.pos.y]?.[this.pos.x - 1] ?? null;
         break;
     }
     return tile;

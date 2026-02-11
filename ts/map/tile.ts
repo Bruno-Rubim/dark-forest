@@ -1,8 +1,8 @@
-import { canvasManager } from "../canvasManager";
-import Position from "../gameElements/position";
-import { GAMEHEIGHT, GAMEWIDTH } from "../global";
-import { sprites, type Sprite } from "../sprites";
-import { tileSheetPosList } from "./textureSheetMapping";
+import { canvasManager } from "../canvasManager.js";
+import Position from "../gameElements/position.js";
+import { GAMEHEIGHT, GAMEWIDTH } from "../global.js";
+import { sprites, type Sprite } from "../sprites.js";
+import { tileSheetPosList } from "./textureSheetMapping.js";
 
 export class Tile {
   spriteSheet: Sprite;

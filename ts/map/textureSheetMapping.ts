@@ -1,4 +1,4 @@
-import Position from "../gameElements/position";
+import Position from "../gameElements/position.js";
 
 export const tileSheetPosList: Position[] = [
   new Position(0, 2),

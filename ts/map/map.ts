@@ -1,5 +1,5 @@
-import { gameState } from "../gameState";
-import { tileFactory, type Tile } from "./tile";
+import { gameState } from "../gameState.js";
+import { tileFactory, type Tile } from "./tile.js";
 
 export const mapMatrix: (Tile | null)[][] = [];
 
@@ -27,8 +27,8 @@ async function loadMapFromImage(
 }
 
 function handleTile(x: number, y: number, r: number, g: number, b: number) {
-  if (!mapMatrix[x]) {
-    mapMatrix[x] = [];
+  if (!mapMatrix[y]) {
+    mapMatrix[y] = [];
   }
 
   const pixelValue = "" + r + g + b;
@@ -73,16 +73,16 @@ export async function loadMap() {
       for (let x = 0; x < width; x++) {
         const index = (y * width + x) * 4;
 
-        const r = data[index];
-        const g = data[index + 1];
-        const b = data[index + 2];
+        const r = data[index]!;
+        const g = data[index + 1]!;
+        const b = data[index + 2]!;
 
         handleTile(x, y, r, g, b);
       }
     }
   });
   gameState.player.pos.update(
-    Math.floor(mapMatrix[0].length / 2),
+    Math.floor(mapMatrix[0]!.length / 2),
     Math.floor(mapMatrix.length / 2),
   );
 }

@@ -1,5 +1,5 @@
-import Position from "./gameElements/position";
-import { Player } from "./player";
+import Position from "./gameElements/position.js";
+import { Player } from "./player.js";
 
 // Holds the current state of the game at any given time
 export default class GameState {

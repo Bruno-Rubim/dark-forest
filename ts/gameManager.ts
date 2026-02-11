@@ -142,11 +142,8 @@ export default class GameManager {
         break;
     }
     relPosList.forEach((p) => {
-      let tile = null;
-      const col = mapMatrix[startingTile.y + p.y];
-      if (col && col[startingTile.x + p.x]) {
-        tile = col[startingTile.x + p.x];
-      }
+      let tile =
+        mapMatrix[startingTile.y + p.y]?.[startingTile.x + p.x] ?? null;
       tiles.push(tile);
     });
     return tiles;
