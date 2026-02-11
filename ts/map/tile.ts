@@ -87,6 +87,8 @@ class TileFactory {
           alt: alt,
         });
 
+      case "000":
+        return null;
       case "0119255":
         return new Tile({
           shadowSpriteSheet: sprites.texture_shadow_ground,
