@@ -1,10 +1,11 @@
 import { canvasManager } from "./canvasManager.js";
 import { bindListeners, inputState } from "./input/inputState.js";
-import { EAST, LEFT, NORTH, RIGHT, SOUTH, WEST } from "./global.js";
+import { EAST, GAMEHEIGHT, GAMEWIDTH, LEFT, NORTH, RIGHT, SOUTH, WEST, } from "./global.js";
 import { timerManager } from "./timer/timerManager.js";
 import { loadMap, mapMatrix } from "./map/map.js";
 import Position from "./gameElements/position.js";
 import { gameState } from "./gameState.js";
+import { sprites } from "./sprites.js";
 export default class GameManager {
     cursorChanged = false;
     hoverItemDesc = false;
@@ -95,16 +96,25 @@ export default class GameManager {
                 }
                 break;
         }
-        relPosList.forEach((p) => {
+        relPosList.forEach((p, i) => {
             let tile = mapMatrix[startingTile.y + p.y]?.[startingTile.x + p.x] ?? null;
-            tiles.push(tile);
+            tiles.push({ tile: tile, id: i });
         });
-        return tiles;
+        const ground = [];
+        const blocks = [];
+        ground.push(...tiles.filter((x) => !x.tile?.colision));
+        blocks.push(...tiles.filter((x) => x.tile?.colision));
+        return { ground: ground, blocks: blocks };
     }
     renderTiles(tiles) {
-        tiles.forEach((tile, i) => {
-            tile?.render(i, gameState.player.facing % 2 == 1);
+        tiles.forEach((x) => {
+            x.tile?.render(x.id, gameState.player.facing % 2 == 1);
         });
+    }
+    renderTileView() {
+        this.renderTiles(this.tileView.ground);
+        canvasManager.renderSprite(sprites.ground_shadow, new Position(), GAMEWIDTH, GAMEHEIGHT);
+        this.renderTiles(this.tileView.blocks);
     }
     updateGame() {
         if (!this.mapLoaded) {
@@ -121,6 +131,6 @@ export default class GameManager {
         if (!this.mapLoaded) {
             return;
         }
-        this.renderTiles(this.tileView);
+        this.renderTileView();
     }
 }

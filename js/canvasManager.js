@@ -54,10 +54,17 @@ export default class CanvasManager {
     renderSprite(sprite, pos, width, height) {
         this.ctx.drawImage(sprite.img, Math.floor(pos.x * this.renderScale), Math.floor(pos.y * this.renderScale), width * this.renderScale, height * this.renderScale);
     }
-    renderSpriteFromSheet(spriteSheet, pos, width, height, posInSheet, widthInSheet, heightInSheet) {
+    renderSpriteFromSheet(spriteSheet, pos, width, height, posInSheet, widthInSheet, heightInSheet, mirror) {
+        if (mirror) {
+            this.ctx.save();
+            this.ctx.scale(-1, 1);
+        }
         widthInSheet ??= width;
         heightInSheet ??= height;
-        this.ctx.drawImage(spriteSheet.img, posInSheet.x * widthInSheet, posInSheet.y * heightInSheet, widthInSheet, heightInSheet, Math.floor(pos.x * this.renderScale), Math.floor(pos.y * this.renderScale), width * this.renderScale, height * this.renderScale);
+        this.ctx.drawImage(spriteSheet.img, posInSheet.x * widthInSheet, posInSheet.y * heightInSheet, widthInSheet, heightInSheet, Math.floor((mirror ? -pos.x - width : pos.x) * this.renderScale), Math.floor(pos.y * this.renderScale), width * this.renderScale, height * this.renderScale);
+        if (mirror) {
+            this.ctx.restore();
+        }
     }
     renderAnimationFrame(spriteSheet, pos, width, height, sheetWidthInFrames, sheetHeightInFrames, animationStartTic, animationSpeed = 1, sheetPosShift = new Position(), loop = true, renderWidth, renderHeight, afterLoopFrame) {
         const totalFrames = sheetWidthInFrames * sheetHeightInFrames;

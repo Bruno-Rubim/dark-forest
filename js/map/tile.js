@@ -2,34 +2,37 @@ import { canvasManager } from "../canvasManager.js";
 import Position from "../gameElements/position.js";
 import { GAMEHEIGHT, GAMEWIDTH } from "../global.js";
 import { sprites } from "../sprites.js";
-import { tileSheetPosList } from "./textureSheetMapping.js";
+import { altTileSheetPosList, tileSheetPosList, } from "./textureSheetMapping.js";
 export class Tile {
     spriteSheet;
     shadowSpriteSheet;
-    altSpriteSheet;
+    canAlt;
     name;
     colision;
     alt;
     constructor(args) {
         this.spriteSheet = args.spriteSheet;
-        this.shadowSpriteSheet = args.shadowSpriteSheet;
         this.name = args.name;
         this.colision = args.colision;
         this.alt = args.alt;
-        this.altSpriteSheet = args.altSpriteSheet ?? null;
+        this.shadowSpriteSheet = args.shadowSpriteSheet ?? null;
+        this.canAlt = args.canAlt ?? false;
     }
     render(queueNum, invert) {
-        const sheetPos = tileSheetPosList[queueNum];
+        let sheetPos = tileSheetPosList[queueNum];
+        let spriteSheet = this.spriteSheet;
+        let alt = invert ? !this.alt : this.alt;
+        const drawAlt = this.canAlt && alt;
+        if (drawAlt) {
+            sheetPos = altTileSheetPosList[queueNum];
+        }
         if (!sheetPos) {
             return;
         }
-        let spriteSheet = this.spriteSheet;
-        let alt = invert ? !this.alt : this.alt;
-        if (this.altSpriteSheet && alt) {
-            spriteSheet = this.altSpriteSheet;
+        canvasManager.renderSpriteFromSheet(spriteSheet, new Position(), GAMEWIDTH, GAMEHEIGHT, sheetPos, 128, 128, drawAlt);
+        if (this.shadowSpriteSheet) {
+            canvasManager.renderSpriteFromSheet(this.shadowSpriteSheet, new Position(), GAMEWIDTH, GAMEHEIGHT, sheetPos, 128, 128, drawAlt);
         }
-        canvasManager.renderSpriteFromSheet(spriteSheet, new Position(), GAMEWIDTH, GAMEHEIGHT, sheetPos, 128, 128);
-        canvasManager.renderSpriteFromSheet(this.shadowSpriteSheet, new Position(), GAMEWIDTH, GAMEHEIGHT, sheetPos, 128, 128);
     }
 }
 class TileFactory {
@@ -38,8 +41,8 @@ class TileFactory {
             case "146146146":
                 return new Tile({
                     spriteSheet: sprites.texture_rock,
-                    altSpriteSheet: sprites.texture_rock_alt,
                     shadowSpriteSheet: sprites.texture_shadow_block,
+                    canAlt: true,
                     name: "rock",
                     colision: true,
                     alt: alt,
@@ -47,8 +50,7 @@ class TileFactory {
             case "3610936":
                 return new Tile({
                     spriteSheet: sprites.texture_grass,
-                    shadowSpriteSheet: sprites.texture_shadow_ground,
-                    altSpriteSheet: sprites.texture_grass_alt,
+                    canAlt: true,
                     name: "grass",
                     colision: false,
                     alt: alt,
@@ -61,11 +63,17 @@ class TileFactory {
                     colision: true,
                     alt: alt,
                 });
+            case "181138103":
+                return new Tile({
+                    spriteSheet: sprites.texture_dirt,
+                    name: "dirt",
+                    colision: false,
+                    alt: alt,
+                });
             case "000":
                 return null;
             case "0119255":
                 return new Tile({
-                    shadowSpriteSheet: sprites.texture_shadow_ground,
                     spriteSheet: sprites.texture_blue,
                     name: "blue",
                     colision: false,
