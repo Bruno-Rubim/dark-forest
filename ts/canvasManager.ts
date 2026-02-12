@@ -105,7 +105,13 @@ export default class CanvasManager {
     posInSheet: Position,
     widthInSheet?: number,
     heightInSheet?: number,
+    mirror?: boolean,
   ) {
+    if (mirror) {
+      this.ctx.save();
+      this.ctx.scale(-1, 1);
+    }
+
     widthInSheet ??= width;
     heightInSheet ??= height;
     this.ctx.drawImage(
@@ -114,11 +120,15 @@ export default class CanvasManager {
       posInSheet.y * heightInSheet,
       widthInSheet,
       heightInSheet,
-      Math.floor(pos.x * this.renderScale),
+      Math.floor((mirror ? -pos.x - width : pos.x) * this.renderScale),
       Math.floor(pos.y * this.renderScale),
       width * this.renderScale,
       height * this.renderScale,
     );
+
+    if (mirror) {
+      this.ctx.restore();
+    }
   }
 
   /**

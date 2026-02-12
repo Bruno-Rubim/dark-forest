@@ -60,4 +60,9 @@ export function bindListeners(element: HTMLElement) {
   element.addEventListener("keyup", (e) => {
     inputState.keyboard[e.key] = "unpressed";
   });
+
+  window.addEventListener("mouseup", () => {
+    element.focus();
+  });
+  element.focus();
 }
