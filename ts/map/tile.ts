@@ -27,15 +27,18 @@ export class Tile {
     this.alt = args.alt;
     this.altSpriteSheet = args.altSpriteSheet ?? null;
   }
-  render(queueNum: number) {
+  render(queueNum: number, invert: boolean) {
     const sheetPos = tileSheetPosList[queueNum];
     if (!sheetPos) {
       return;
     }
     let spriteSheet = this.spriteSheet;
-    if (this.alt && this.altSpriteSheet) {
+    let alt = invert ? !this.alt : this.alt;
+
+    if (this.altSpriteSheet && alt) {
       spriteSheet = this.altSpriteSheet;
     }
+
     canvasManager.renderSpriteFromSheet(
       spriteSheet,
       new Position(),

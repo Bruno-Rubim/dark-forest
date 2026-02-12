@@ -151,7 +151,7 @@ export default class GameManager {
 
   renderTiles(tiles: (Tile | null)[]) {
     tiles.forEach((tile, i) => {
-      tile?.render(i);
+      tile?.render(i, gameState.player.facing % 2 == 1);
     });
   }
 
