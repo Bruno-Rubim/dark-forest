@@ -1,12 +1,22 @@
 import { canvasManager } from "./canvasManager.js";
 import { bindListeners, inputState } from "./input/inputState.js";
-import { EAST, LEFT, NORTH, RIGHT, SOUTH, WEST } from "./global.js";
+import {
+  EAST,
+  GAMEHEIGHT,
+  GAMEWIDTH,
+  LEFT,
+  NORTH,
+  RIGHT,
+  SOUTH,
+  WEST,
+} from "./global.js";
 import type { Action } from "./action.js";
 import { timerManager } from "./timer/timerManager.js";
 import { loadMap, mapMatrix } from "./map/map.js";
 import Position from "./gameElements/position.js";
 import { gameState } from "./gameState.js";
 import type { Tile } from "./map/tile.js";
+import { sprites } from "./sprites.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
 export default class GameManager {
@@ -88,7 +98,7 @@ export default class GameManager {
   }
 
   get tileView() {
-    const tiles: (Tile | null)[] = [];
+    const tiles: { tile: Tile | null; id: number }[] = [];
     let relPosList: Position[] = [];
     let startingTile: Position;
     switch (gameState.player.facingCard) {
@@ -141,18 +151,33 @@ export default class GameManager {
         }
         break;
     }
-    relPosList.forEach((p) => {
+    relPosList.forEach((p, i) => {
       let tile =
         mapMatrix[startingTile.y + p.y]?.[startingTile.x + p.x] ?? null;
-      tiles.push(tile);
+      tiles.push({ tile: tile, id: i });
     });
-    return tiles;
+    const ground: { tile: Tile | null; id: number }[] = [];
+    const blocks: { tile: Tile | null; id: number }[] = [];
+    ground.push(...tiles.filter((x) => !x.tile?.colision));
+    blocks.push(...tiles.filter((x) => x.tile?.colision));
+    return { ground: ground, blocks: blocks };
   }
 
-  renderTiles(tiles: (Tile | null)[]) {
-    tiles.forEach((tile, i) => {
-      tile?.render(i, gameState.player.facing % 2 == 1);
+  renderTiles(tiles: { tile: Tile | null; id: number }[]) {
+    tiles.forEach((x) => {
+      x.tile?.render(x.id, gameState.player.facing % 2 == 1);
     });
+  }
+
+  renderTileView() {
+    this.renderTiles(this.tileView.ground);
+    canvasManager.renderSprite(
+      sprites.ground_shadow,
+      new Position(),
+      GAMEWIDTH,
+      GAMEHEIGHT,
+    );
+    this.renderTiles(this.tileView.blocks);
   }
 
   /**
@@ -178,6 +203,6 @@ export default class GameManager {
     if (!this.mapLoaded) {
       return;
     }
-    this.renderTiles(this.tileView);
+    this.renderTileView();
   }
 }
