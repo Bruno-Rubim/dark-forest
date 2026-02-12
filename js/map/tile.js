@@ -18,13 +18,14 @@ export class Tile {
         this.alt = args.alt;
         this.altSpriteSheet = args.altSpriteSheet ?? null;
     }
-    render(queueNum) {
+    render(queueNum, invert) {
         const sheetPos = tileSheetPosList[queueNum];
         if (!sheetPos) {
             return;
         }
         let spriteSheet = this.spriteSheet;
-        if (this.alt && this.altSpriteSheet) {
+        let alt = invert ? !this.alt : this.alt;
+        if (this.altSpriteSheet && alt) {
             spriteSheet = this.altSpriteSheet;
         }
         canvasManager.renderSpriteFromSheet(spriteSheet, new Position(), GAMEWIDTH, GAMEHEIGHT, sheetPos, 128, 128);
@@ -60,6 +61,8 @@ class TileFactory {
                     colision: true,
                     alt: alt,
                 });
+            case "000":
+                return null;
             case "0119255":
                 return new Tile({
                     shadowSpriteSheet: sprites.texture_shadow_ground,

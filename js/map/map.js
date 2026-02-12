@@ -25,7 +25,7 @@ function handleTile(x, y, r, g, b) {
     mapMatrix[y][x] = tileFactory.createTile(colorValue, alt);
 }
 export async function loadMap() {
-    await loadMapFromImage("./images/map-test.png", (data, width, height) => {
+    await loadMapFromImage("./images/map.png", (data, width, height) => {
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
                 const index = (y * width + x) * 4;
