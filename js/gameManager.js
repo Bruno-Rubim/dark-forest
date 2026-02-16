@@ -47,12 +47,22 @@ export default class GameManager {
         }
         if (inputState.keyboard.w == "pressed") {
             inputState.keyboard.w = "read";
-            gameState.player.move("forawrds");
+            gameState.player.move(gameState.player.frontCard);
             return;
         }
         if (inputState.keyboard.s == "pressed") {
             inputState.keyboard.s = "read";
-            gameState.player.move("backwards");
+            gameState.player.move(gameState.player.backCard);
+            return;
+        }
+        if (inputState.keyboard.q == "pressed") {
+            inputState.keyboard.q = "read";
+            gameState.player.move(gameState.player.leftCard);
+            return;
+        }
+        if (inputState.keyboard.e == "pressed") {
+            inputState.keyboard.e = "read";
+            gameState.player.move(gameState.player.rightCard);
             return;
         }
         if (inputState.keyboard.a == "pressed") {
@@ -70,7 +80,7 @@ export default class GameManager {
         const tiles = [];
         let relPosList = [];
         let startingTile;
-        switch (gameState.player.facingCard) {
+        switch (gameState.player.frontCard) {
             case NORTH:
                 startingTile = gameState.player.pos.subtract(2, 4);
                 for (let y = 0; y < 5; y++) {
