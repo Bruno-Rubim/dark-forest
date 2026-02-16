@@ -38,6 +38,7 @@ export const sprites = {
   texture_rock: new Sprite("texture_rock"),
   texture_dirt: new Sprite("texture_dirt"),
   texture_tree: new Sprite("texture_tree"),
+  texture_flower: new Sprite("texture_flower"),
 };
 
 const spriteArr = Object.values(sprites);
