@@ -21,7 +21,6 @@ export const sprites = {
     "9s": new Sprite("9s"),
     ground_shadow: new Sprite("ground_shadow"),
     texture_shadow_block: new Sprite("texture_shadow_block"),
-    texture_shadow_tree: new Sprite("texture_shadow_tree"),
     texture_blue: new Sprite("texture_blue"),
     texture_green: new Sprite("texture_green"),
     texture_white: new Sprite("texture_white"),
@@ -30,6 +29,7 @@ export const sprites = {
     texture_grass: new Sprite("texture_grass"),
     texture_rock: new Sprite("texture_rock"),
     texture_dirt: new Sprite("texture_dirt"),
+    texture_dirt_pit: new Sprite("texture_dirt_pit"),
     texture_tree: new Sprite("texture_tree"),
     texture_flower: new Sprite("texture_flower"),
 };

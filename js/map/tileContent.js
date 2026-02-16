@@ -1,27 +1,23 @@
 import { canvasManager } from "../canvasManager.js";
 import Position from "../gameElements/position.js";
 import { GAMEHEIGHT, GAMEWIDTH } from "../global.js";
-import {} from "../sprites.js";
 import { altTileSheetPosList, tileSheetPosList, } from "./textureSheetMapping.js";
-import { TileContent } from "./tileContent.js";
-export class Tile {
+export class TileContent {
     spriteSheet;
-    shadowSpriteSheet;
-    canAlt;
     colision;
     isAlt;
-    content;
-    isGround;
     type;
+    canBeTaken;
+    canAlt;
+    placedOn;
     constructor(args) {
-        this.spriteSheet = args.spriteSheet;
-        this.colision = args.colision;
-        this.isAlt = args.isAlt;
-        this.isGround = args.isGround;
         this.type = args.type;
-        this.shadowSpriteSheet = args.shadowSpriteSheet ?? null;
+        this.spriteSheet = args.spriteSheet;
+        this.isAlt = args.isAlt;
+        this.colision = args.colision;
+        this.canBeTaken = args.canBeTaken;
         this.canAlt = args.canAlt ?? false;
-        this.content = args.content ?? null;
+        this.placedOn = args.placedOn ?? [];
     }
     render(queueNum, invert) {
         let sheetPos = tileSheetPosList[queueNum];
@@ -32,11 +28,9 @@ export class Tile {
             sheetPos = altTileSheetPosList[queueNum];
         }
         if (!sheetPos) {
+            console.warn(queueNum);
             return;
         }
         canvasManager.renderSpriteFromSheet(spriteSheet, new Position(), GAMEWIDTH, GAMEHEIGHT, sheetPos, 128, 128, drawAlt);
-        if (this.shadowSpriteSheet) {
-            canvasManager.renderSpriteFromSheet(this.shadowSpriteSheet, new Position(), GAMEWIDTH, GAMEHEIGHT, sheetPos, 128, 128, drawAlt);
-        }
     }
 }

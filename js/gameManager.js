@@ -7,14 +7,24 @@ import Position from "./gameElements/position.js";
 import { gameState } from "./gameState.js";
 import { sprites } from "./sprites.js";
 export default class GameManager {
-    cursorChanged = false;
-    hoverItemDesc = false;
     mapLoaded = false;
     constructor() {
         bindListeners(canvasManager.canvasElement);
         loadMap().then(() => {
             this.mapLoaded = true;
         });
+    }
+    interaction() {
+        const tilePos = gameState.player.frontCoords;
+        const tile = mapMatrix[tilePos.y][tilePos.x];
+        const held = gameState.player.holding;
+        if ((tile.content && !tile.content?.canBeTaken) ||
+            (held && !held.placedOn.includes(tile.type))) {
+            return;
+        }
+        gameState.player.holding = tile.content;
+        tile.content = held;
+        gameState.player.holding;
     }
     handleAction(action) {
         if (!action) {
@@ -75,9 +85,15 @@ export default class GameManager {
             gameState.player.turn(RIGHT);
             return;
         }
+        if (inputState.keyboard[" "] == "pressed") {
+            inputState.keyboard[" "] = "read";
+            this.interaction();
+            return;
+        }
     }
     get tileView() {
-        const tiles = [];
+        const ground = [];
+        const blocks = [];
         let relPosList = [];
         let startingTile;
         switch (gameState.player.frontCard) {
@@ -108,30 +124,37 @@ export default class GameManager {
         }
         relPosList.forEach((p, i) => {
             let tile = mapMatrix[startingTile.y + p.y]?.[startingTile.x + p.x] ?? null;
-            tiles.push({ tile: tile, id: i });
+            if (!tile) {
+                return;
+            }
+            if (tile.isGround) {
+                ground.push({ tile: tile, id: i });
+            }
+            else {
+                blocks.push({ tile: tile, id: i });
+            }
+            if (tile.content) {
+                blocks.push({ tile: tile.content, id: i });
+            }
         });
-        const ground = [];
-        const blocks = [];
-        ground.push(...tiles.filter((x) => !x.tile?.colision));
-        blocks.push(...tiles.filter((x) => x.tile?.colision));
         return { ground: ground, blocks: blocks };
     }
     renderTiles(tiles) {
-        tiles.forEach((x) => {
+        tiles.ground.forEach((x) => {
+            x.tile?.render(x.id, gameState.player.facing % 2 == 1);
+        });
+        canvasManager.renderSprite(sprites.ground_shadow, new Position(), GAMEWIDTH, GAMEHEIGHT);
+        tiles.blocks.forEach((x) => {
             x.tile?.render(x.id, gameState.player.facing % 2 == 1);
         });
     }
     renderTileView() {
-        this.renderTiles(this.tileView.ground);
-        canvasManager.renderSprite(sprites.ground_shadow, new Position(), GAMEWIDTH, GAMEHEIGHT);
-        this.renderTiles(this.tileView.blocks);
+        this.renderTiles(this.tileView);
     }
     updateGame() {
         if (!this.mapLoaded) {
             return;
         }
-        this.cursorChanged = false;
-        this.hoverItemDesc = false;
         this.checkTimers();
         const actions = this.handleKeyInput();
         this.handleAction(actions);
@@ -142,5 +165,6 @@ export default class GameManager {
             return;
         }
         this.renderTileView();
+        gameState.player.holding?.render(25, false);
     }
 }
