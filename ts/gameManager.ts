@@ -17,11 +17,10 @@ import Position from "./gameElements/position.js";
 import { gameState } from "./gameState.js";
 import type { Tile } from "./map/tile.js";
 import { sprites } from "./sprites.js";
+import type { TileContent } from "./map/tileContent.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
 export default class GameManager {
-  cursorChanged = false;
-  hoverItemDesc = false;
   mapLoaded = false;
 
   constructor() {
@@ -29,6 +28,21 @@ export default class GameManager {
     loadMap().then(() => {
       this.mapLoaded = true;
     });
+  }
+
+  interaction() {
+    const tilePos = gameState.player.frontCoords;
+    const tile = mapMatrix[tilePos.y]![tilePos.x]!;
+    const held = gameState.player.holding;
+    if (
+      (tile.content && !tile.content?.canBeTaken) ||
+      (held && !held.placedOn.includes(tile.type))
+    ) {
+      return;
+    }
+    gameState.player.holding = tile.content;
+    tile.content = held;
+    gameState.player.holding;
   }
 
   /**
@@ -105,10 +119,17 @@ export default class GameManager {
       gameState.player.turn(RIGHT);
       return;
     }
+    if (inputState.keyboard[" "] == "pressed") {
+      inputState.keyboard[" "] = "read";
+      this.interaction();
+      return;
+    }
   }
 
   get tileView() {
-    const tiles: { tile: Tile | null; id: number }[] = [];
+    const ground: { tile: Tile | TileContent | null; id: number }[] = [];
+    const blocks: { tile: Tile | TileContent | null; id: number }[] = [];
+
     let relPosList: Position[] = [];
     let startingTile: Position;
     switch (gameState.player.frontCard) {
@@ -164,30 +185,42 @@ export default class GameManager {
     relPosList.forEach((p, i) => {
       let tile =
         mapMatrix[startingTile.y + p.y]?.[startingTile.x + p.x] ?? null;
-      tiles.push({ tile: tile, id: i });
+
+      if (!tile) {
+        return;
+      }
+      if (tile.isGround) {
+        ground.push({ tile: tile, id: i });
+      } else {
+        blocks.push({ tile: tile, id: i });
+      }
+      if (tile.content) {
+        blocks.push({ tile: tile.content, id: i });
+      }
     });
-    const ground: { tile: Tile | null; id: number }[] = [];
-    const blocks: { tile: Tile | null; id: number }[] = [];
-    ground.push(...tiles.filter((x) => !x.tile?.colision));
-    blocks.push(...tiles.filter((x) => x.tile?.colision));
     return { ground: ground, blocks: blocks };
   }
 
-  renderTiles(tiles: { tile: Tile | null; id: number }[]) {
-    tiles.forEach((x) => {
+  renderTiles(tiles: {
+    ground: { tile: Tile | TileContent | null; id: number }[];
+    blocks: { tile: Tile | TileContent | null; id: number }[];
+  }) {
+    tiles.ground.forEach((x) => {
       x.tile?.render(x.id, gameState.player.facing % 2 == 1);
     });
-  }
-
-  renderTileView() {
-    this.renderTiles(this.tileView.ground);
     canvasManager.renderSprite(
       sprites.ground_shadow,
       new Position(),
       GAMEWIDTH,
       GAMEHEIGHT,
     );
-    this.renderTiles(this.tileView.blocks);
+    tiles.blocks.forEach((x) => {
+      x.tile?.render(x.id, gameState.player.facing % 2 == 1);
+    });
+  }
+
+  renderTileView() {
+    this.renderTiles(this.tileView);
   }
 
   /**
@@ -197,10 +230,6 @@ export default class GameManager {
     if (!this.mapLoaded) {
       return;
     }
-
-    this.cursorChanged = false;
-    this.hoverItemDesc = false;
-
     this.checkTimers();
 
     const actions: Action[] | void = this.handleKeyInput();
@@ -214,5 +243,6 @@ export default class GameManager {
       return;
     }
     this.renderTileView();
+    gameState.player.holding?.render(25, false);
   }
 }

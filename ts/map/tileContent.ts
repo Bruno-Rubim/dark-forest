@@ -1,41 +1,37 @@
 import { canvasManager } from "../canvasManager.js";
 import Position from "../gameElements/position.js";
 import { GAMEHEIGHT, GAMEWIDTH } from "../global.js";
-import { type Sprite } from "../sprites.js";
+import type { Sprite } from "../sprites.js";
 import {
   altTileSheetPosList,
   tileSheetPosList,
 } from "./textureSheetMapping.js";
-import { TileContent } from "./tileContent.js";
 
-export class Tile {
+export class TileContent {
   spriteSheet: Sprite;
-  shadowSpriteSheet: Sprite | null;
-  canAlt: boolean;
   colision: boolean;
   isAlt: boolean;
-  content: TileContent | null;
-  isGround: boolean;
   type: string;
+  canBeTaken: boolean;
+  canAlt?: boolean;
+  placedOn: string[];
 
   constructor(args: {
     spriteSheet: Sprite;
     colision: boolean;
-    isGround: boolean;
     isAlt: boolean;
     type: string;
+    canBeTaken: boolean;
     canAlt?: boolean;
-    shadowSpriteSheet?: Sprite;
-    content?: TileContent;
+    placedOn?: string[];
   }) {
-    this.spriteSheet = args.spriteSheet;
-    this.colision = args.colision;
-    this.isAlt = args.isAlt;
-    this.isGround = args.isGround;
     this.type = args.type;
-    this.shadowSpriteSheet = args.shadowSpriteSheet ?? null;
+    this.spriteSheet = args.spriteSheet;
+    this.isAlt = args.isAlt;
+    this.colision = args.colision;
+    this.canBeTaken = args.canBeTaken;
     this.canAlt = args.canAlt ?? false;
-    this.content = args.content ?? null;
+    this.placedOn = args.placedOn ?? [];
   }
 
   render(queueNum: number, invert: boolean) {
@@ -49,6 +45,7 @@ export class Tile {
       sheetPos = altTileSheetPosList[queueNum];
     }
     if (!sheetPos) {
+      console.warn(queueNum);
       return;
     }
 
@@ -62,17 +59,5 @@ export class Tile {
       128,
       drawAlt,
     );
-    if (this.shadowSpriteSheet) {
-      canvasManager.renderSpriteFromSheet(
-        this.shadowSpriteSheet,
-        new Position(),
-        GAMEWIDTH,
-        GAMEHEIGHT,
-        sheetPos,
-        128,
-        128,
-        drawAlt,
-      );
-    }
   }
 }

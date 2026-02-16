@@ -1,4 +1,4 @@
-import type Position from "./gameElements/position.js";
+import Position from "./gameElements/position.js";
 import {
   EAST,
   LEFT,
@@ -10,10 +10,13 @@ import {
 } from "./global.js";
 import { mapMatrix } from "./map/map.js";
 import type { Tile } from "./map/tile.js";
+import type { TileContent } from "./map/tileContent.js";
 
 export class Player {
   pos: Position;
   facing = 0;
+  holding: TileContent | null = null;
+
   constructor(pos: Position) {
     this.pos = pos;
   }
@@ -32,6 +35,19 @@ export class Player {
 
   get rightCard(): Cardinals {
     return [EAST, SOUTH, WEST, NORTH][this.facing] as Cardinals;
+  }
+
+  get frontCoords() {
+    switch (this.frontCard) {
+      case NORTH:
+        return this.pos.add(0, -1);
+      case EAST:
+        return this.pos.add(1, 0);
+      case SOUTH:
+        return this.pos.add(0, 1);
+      case WEST:
+        return this.pos.add(-1, 0);
+    }
   }
 
   getBlockAdj(dir: Cardinals): Tile | null {
@@ -63,24 +79,29 @@ export class Player {
   }
 
   move(dir: Cardinals) {
+    let tile;
     switch (dir) {
       case NORTH:
-        if (this.getBlockAdj(NORTH)?.colision != true) {
+        tile = this.getBlockAdj(NORTH);
+        if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(0, -1);
         }
         break;
       case SOUTH:
-        if (this.getBlockAdj(SOUTH)?.colision != true) {
+        tile = this.getBlockAdj(SOUTH);
+        if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(0, 1);
         }
         break;
       case EAST:
-        if (this.getBlockAdj(EAST)?.colision != true) {
+        tile = this.getBlockAdj(EAST);
+        if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(1, 0);
         }
         break;
       case WEST:
-        if (this.getBlockAdj(WEST)?.colision != true) {
+        tile = this.getBlockAdj(WEST);
+        if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(-1, 0);
         }
         break;
