@@ -18,9 +18,21 @@ export default class GameManager {
         const tilePos = gameState.player.frontCoords;
         const tile = mapMatrix[tilePos.y][tilePos.x];
         const held = gameState.player.holding;
+        if (tile.type == "door" && held?.type == "key") {
+            gameState.player.holding = null;
+            tile.spriteSheet = sprites.texture_sheet_bricks_ground;
+            tile.colision = false;
+            return;
+        }
         if ((tile.content && !tile.content?.canBeTaken) ||
             (held && !held.placedOn.includes(tile.type))) {
             return;
+        }
+        if (tile.type == "dirt_pit" && held?.type == "flower") {
+            mapMatrix[22][28].content = null;
+            mapMatrix[23][28].content = null;
+            mapMatrix[24][28].content = null;
+            mapMatrix[25][28].content = null;
         }
         gameState.player.holding = tile.content;
         tile.content = held;
