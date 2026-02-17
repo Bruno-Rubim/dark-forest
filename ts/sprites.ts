@@ -36,8 +36,12 @@ export const sprites = {
   texture_sheet_grass: new Sprite("texture_sheet_grass"),
   texture_sheet_dirt: new Sprite("texture_sheet_dirt"),
   texture_sheet_dirt_pit: new Sprite("texture_sheet_dirt_pit"),
+  texture_sheet_rock_ground: new Sprite("texture_sheet_rock_ground"),
+  texture_sheet_bricks_ground: new Sprite("texture_sheet_bricks_ground"),
 
+  texture_sheet_hedge: new Sprite("texture_sheet_hedge"),
   texture_sheet_rock: new Sprite("texture_sheet_rock"),
+  texture_sheet_bricks: new Sprite("texture_sheet_bricks"),
   texture_sheet_door: new Sprite("texture_sheet_door"),
 
   texture_sheet_tree: new Sprite("texture_sheet_tree"),

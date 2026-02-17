@@ -15,6 +15,27 @@ class TileFactory {
           colision: true,
           isAlt: isAlt,
         });
+      case "182730":
+        return new Tile({
+          type: "bricks",
+          spriteSheet: sprites.texture_sheet_bricks,
+          shadowSpriteSheet: sprites.texture_sheet_shadow_block,
+          canAlt: true,
+          isGround: false,
+          colision: true,
+          isAlt: isAlt,
+        });
+
+      case "287331":
+        return new Tile({
+          type: "hedge",
+          spriteSheet: sprites.texture_sheet_hedge,
+          shadowSpriteSheet: sprites.texture_sheet_shadow_block,
+          canAlt: true,
+          isGround: false,
+          colision: true,
+          isAlt: isAlt,
+        });
       case "1389041":
         return new Tile({
           type: "door",
@@ -34,6 +55,15 @@ class TileFactory {
           colision: false,
           isAlt: isAlt,
         });
+      case "906660":
+        return new Tile({
+          type: "dirt",
+          spriteSheet: sprites.texture_sheet_dirt,
+          isGround: true,
+          colision: false,
+          isAlt: isAlt,
+        });
+
       case "7310973":
         return new Tile({
           type: "grass",
@@ -50,14 +80,6 @@ class TileFactory {
             canBeTaken: false,
             colision: true,
           }),
-        });
-      case "181138103":
-        return new Tile({
-          type: "dirt",
-          spriteSheet: sprites.texture_sheet_dirt,
-          isGround: true,
-          colision: false,
-          isAlt: isAlt,
         });
       case "2682249":
         return new Tile({
@@ -95,7 +117,7 @@ class TileFactory {
             colision: true,
           }),
         });
-      case "906660":
+      case "1095453":
         return new Tile({
           type: "dirt_pit",
           spriteSheet: sprites.texture_sheet_dirt_pit,
