@@ -1,6 +1,6 @@
 import { gameState } from "../gameState.js";
-import { type Tile } from "./tile.js";
-import { tileFactory } from "./tileFactory.js";
+import { type Tile } from "../tile/tile.js";
+import { tileFactory } from "../tile/tileFactory.js";
 
 export const mapMatrix: (Tile | null)[][] = [];
 

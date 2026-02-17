@@ -9,8 +9,8 @@ import {
   type Cardinals,
 } from "./global.js";
 import { mapMatrix } from "./map/map.js";
-import type { Tile } from "./map/tile.js";
-import type { TileContent } from "./map/tileContent.js";
+import type { Tile } from "./tile/tile.js";
+import type { TileContent } from "./tile/tileContent.js";
 
 export class Player {
   pos: Position;
