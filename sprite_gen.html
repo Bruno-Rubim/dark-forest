@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sprite gen</title>
   </head>
-  <body>
-    <input type="text" value="grass" />
+  <body style="background-color: #000">
+    <input type="text" value="bricks" />
     <br />
     <button onclick="genBlock()">block</button>
     <br />
+    <button onclick="genTallBlock()">tall block</button>
+    <br />
     <button onclick="genGround()">ground</button>
+    <br />
     <br />
     <img src="./images/texture_dirt.png" hidden />
     <canvas></canvas>
@@ -175,6 +178,91 @@
     drawTexture([0, 0], [127, 0], [0, 127], [127, 127], 31);
   }
 
+  async function genTallBlock() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    await new Promise((resolve, reject) => {
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = "./images/texture_" + input.value + ".png";
+    });
+    drawTexture([-29, -215], [12, -93], [-29, -30], [12, 11], 0);
+    drawTexture([-29, -29], [12, 12], [-29, 157], [12, 115], 0);
+    drawTexture([115, -93], [156, 215], [115, 11], [156, -30], 2);
+    drawTexture([115, 12], [156, -29], [115, 115], [156, 156], 2);
+
+    drawTexture([-89, -92], [11, -92], [-89, 11], [11, 11], 3);
+    drawTexture([12, -92], [32, -33], [12, 11], [32, 31], 3);
+    drawTexture([-89, 12], [11, 12], [-89, 115], [11, 115], 3);
+    drawTexture([12, 12], [32, 32], [12, 115], [32, 95], 3);
+
+    drawTexture([12, -92], [115, -92], [12, 11], [115, 11], 4);
+    drawTexture([12, 12], [115, 12], [12, 115], [115, 115], 4);
+
+    drawTexture([95, -33], [115, -92], [95, 31], [115, 11], 5);
+    drawTexture([116, -92], [216, -92], [116, 11], [216, 11], 5);
+    drawTexture([116, 12], [216, 12], [116, 115], [216, 115], 5);
+    drawTexture([95, 32], [115, 12], [95, 95], [115, 115], 5);
+
+    drawTexture([-27, -29], [5, 4], [-27, 32], [5, 43], 6);
+    drawTexture([-27, 33], [5, 44], [-27, 94], [5, 83], 6);
+
+    drawTexture([-27, -29], [32, -29], [-29, 32], [32, 32], 7);
+    drawTexture([33, -29], [44, 3], [33, 32], [44, 43], 7);
+    drawTexture([-27, 33], [32, 33], [-29, 94], [32, 94], 7);
+    drawTexture([33, 33], [44, 44], [33, 94], [44, 83], 7);
+
+    drawTexture([33, -29], [94, -29], [33, 32], [94, 32], 8);
+    drawTexture([33, 33], [94, 33], [33, 94], [94, 94], 8);
+
+    drawTexture([83, 3], [94, -29], [83, 43], [94, 32], 9);
+    drawTexture([95, -29], [154, -29], [95, 32], [154, 32], 9);
+    drawTexture([83, 44], [94, 33], [83, 83], [94, 94], 9);
+    drawTexture([95, 33], [154, 33], [95, 94], [154, 94], 9);
+
+    drawTexture([122, 4], [154, -29], [122, 44], [154, 32], 10);
+    drawTexture([122, 44], [154, 33], [122, 83], [154, 94], 10);
+
+    drawTexture([-31, 7], [6, 7], [-31, 44], [6, 44], 11);
+    drawTexture([7, 7], [26, 25], [7, 44], [26, 50], 11);
+    drawTexture([-31, 45], [6, 45], [-31, 82], [6, 82], 11);
+    drawTexture([7, 45], [26, 51], [7, 82], [26, 76], 11);
+
+    drawTexture([6, 7], [44, 7], [6, 44], [44, 44], 12);
+    drawTexture([45, 7], [51, 24], [45, 44], [51, 50], 12);
+    drawTexture([6, 45], [44, 45], [6, 82], [44, 82], 12);
+    drawTexture([45, 45], [51, 51], [45, 82], [51, 76], 12);
+
+    drawTexture([45, 7], [82, 7], [45, 44], [82, 44], 13);
+    drawTexture([45, 45], [82, 45], [45, 82], [82, 82], 13);
+
+    drawTexture([76, 24], [82, 7], [76, 50], [82, 44], 14);
+    drawTexture([83, 7], [121, 7], [83, 45], [121, 45], 14);
+    drawTexture([83, 45], [121, 45], [83, 82], [121, 82], 14);
+    drawTexture([76, 51], [82, 45], [76, 76], [82, 82], 14);
+
+    drawTexture([101, 25], [120, 7], [101, 50], [120, 44], 15);
+    drawTexture([121, 7], [158, 7], [121, 44], [158, 44], 15);
+    drawTexture([101, 51], [120, 45], [101, 76], [120, 82], 15);
+    drawTexture([121, 45], [158, 45], [121, 82], [158, 82], 15);
+
+    drawTexture([0, 28], [26, 28], [0, 51], [26, 51], 16);
+    drawTexture([0, 52], [26, 52], [0, 75], [26, 75], 16);
+
+    drawTexture([27, 28], [51, 28], [27, 51], [51, 51], 17);
+    drawTexture([27, 52], [51, 52], [27, 75], [51, 75], 17);
+
+    drawTexture([52, 28], [75, 28], [52, 51], [75, 51], 18);
+    drawTexture([52, 52], [75, 52], [52, 75], [75, 75], 18);
+
+    drawTexture([76, 28], [100, 28], [76, 51], [100, 51], 19);
+    drawTexture([76, 52], [100, 52], [76, 75], [100, 75], 19);
+
+    drawTexture([101, 28], [127, 28], [101, 51], [127, 51], 20);
+    drawTexture([101, 52], [127, 52], [101, 75], [127, 75], 20);
+
+    drawTexture([0, 0], [127, 0], [0, 127], [127, 127], 31);
+  }
+
   async function genGround() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     await new Promise((resolve, reject) => {
@@ -202,5 +290,5 @@
     drawTexture([0, 0], [127, 0], [0, 127], [127, 127], 31);
   }
 
-  genGround();
+  genTallBlock();
 </script>

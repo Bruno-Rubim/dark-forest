@@ -15,9 +15,10 @@ import { timerManager } from "./timer/timerManager.js";
 import { loadMap, mapMatrix } from "./map/map.js";
 import Position from "./gameElements/position.js";
 import { gameState } from "./gameState.js";
-import type { Tile } from "./map/tile.js";
+import type { Tile } from "./tile/tile.js";
 import { sprites } from "./sprites.js";
-import type { TileContent } from "./map/tileContent.js";
+import type { TileContent } from "./tile/tileContent.js";
+import { DirectedTile } from "./tile/directedTile.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
 export default class GameManager {
@@ -34,9 +35,14 @@ export default class GameManager {
     const tilePos = gameState.player.frontCoords;
     const tile = mapMatrix[tilePos.y]![tilePos.x]!;
     const held = gameState.player.holding;
-    if (tile.type == "door" && held?.type == "key") {
+    if (
+      tile instanceof DirectedTile &&
+      tile.type == "door" &&
+      held?.type == "key"
+    ) {
       gameState.player.holding = null;
-      tile.spriteSheet = sprites.texture_sheet_bricks_ground;
+      tile.frontSpriteSheet = sprites.texture_sheet_doorframe;
+      tile.backSpriteSheet = sprites.texture_sheet_doorframe;
       tile.colision = false;
       return;
     }

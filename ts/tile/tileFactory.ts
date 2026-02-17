@@ -1,4 +1,6 @@
+import { WEST } from "../global.js";
 import { sprites } from "../sprites.js";
+import { DirectedTile } from "./directedTile.js";
 import { Tile } from "./tile.js";
 import { TileContent } from "./tileContent.js";
 
@@ -19,7 +21,7 @@ class TileFactory {
         return new Tile({
           type: "bricks",
           spriteSheet: sprites.texture_sheet_bricks,
-          shadowSpriteSheet: sprites.texture_sheet_shadow_block,
+          shadowSpriteSheet: sprites.texture_sheet_shadow_tall_block,
           canAlt: true,
           isGround: false,
           colision: true,
@@ -37,10 +39,28 @@ class TileFactory {
           isAlt: isAlt,
         });
       case "1389041":
-        return new Tile({
+        return new DirectedTile({
           type: "door",
+          facing: 3,
           spriteSheet: sprites.texture_sheet_door,
-          shadowSpriteSheet: sprites.texture_sheet_shadow_block,
+          rightSpriteSheet: sprites.texture_sheet_doorframe,
+          backhSpriteSheet: sprites.texture_sheet_door,
+          leftSpriteSheet: sprites.texture_sheet_doorframe,
+          shadowSpriteSheet: sprites.texture_sheet_shadow_top_block,
+          canAlt: true,
+          isGround: false,
+          colision: true,
+          isAlt: isAlt,
+        });
+      case "91531":
+        return new DirectedTile({
+          type: "door",
+          facing: 2,
+          spriteSheet: sprites.texture_sheet_door,
+          rightSpriteSheet: sprites.texture_sheet_doorframe,
+          backhSpriteSheet: sprites.texture_sheet_door,
+          leftSpriteSheet: sprites.texture_sheet_doorframe,
+          shadowSpriteSheet: sprites.texture_sheet_shadow_top_block,
           canAlt: true,
           isGround: false,
           colision: true,
