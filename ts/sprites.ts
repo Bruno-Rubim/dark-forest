@@ -25,20 +25,24 @@ export const sprites = {
   "9s": new Sprite("9s"),
   ground_shadow: new Sprite("ground_shadow"),
 
-  texture_shadow_block: new Sprite("texture_shadow_block"),
+  texture_sheet_shadow_block: new Sprite("texture_sheet_shadow_block"),
 
-  texture_blue: new Sprite("texture_blue"),
-  texture_green: new Sprite("texture_green"),
-  texture_white: new Sprite("texture_white"),
-  texture_red: new Sprite("texture_red"),
-  texture_orange: new Sprite("texture_orange"),
+  texture_sheet_blue: new Sprite("texture_sheet_blue"),
+  texture_sheet_green: new Sprite("texture_sheet_green"),
+  texture_sheet_white: new Sprite("texture_sheet_white"),
+  texture_sheet_red: new Sprite("texture_sheet_red"),
+  texture_sheet_orange: new Sprite("texture_sheet_orange"),
 
-  texture_grass: new Sprite("texture_grass"),
-  texture_rock: new Sprite("texture_rock"),
-  texture_dirt: new Sprite("texture_dirt"),
-  texture_dirt_pit: new Sprite("texture_dirt_pit"),
-  texture_tree: new Sprite("texture_tree"),
-  texture_flower: new Sprite("texture_flower"),
+  texture_sheet_grass: new Sprite("texture_sheet_grass"),
+  texture_sheet_dirt: new Sprite("texture_sheet_dirt"),
+  texture_sheet_dirt_pit: new Sprite("texture_sheet_dirt_pit"),
+
+  texture_sheet_rock: new Sprite("texture_sheet_rock"),
+  texture_sheet_door: new Sprite("texture_sheet_door"),
+
+  texture_sheet_tree: new Sprite("texture_sheet_tree"),
+  texture_sheet_flower: new Sprite("texture_sheet_flower"),
+  texture_sheet_key: new Sprite("texture_sheet_key"),
 };
 
 const spriteArr = Object.values(sprites);
