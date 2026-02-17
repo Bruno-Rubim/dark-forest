@@ -6,6 +6,7 @@ import { loadMap, mapMatrix } from "./map/map.js";
 import Position from "./gameElements/position.js";
 import { gameState } from "./gameState.js";
 import { sprites } from "./sprites.js";
+import { DirectedTile } from "./tile/directedTile.js";
 export default class GameManager {
     mapLoaded = false;
     constructor() {
@@ -18,9 +19,12 @@ export default class GameManager {
         const tilePos = gameState.player.frontCoords;
         const tile = mapMatrix[tilePos.y][tilePos.x];
         const held = gameState.player.holding;
-        if (tile.type == "door" && held?.type == "key") {
+        if (tile instanceof DirectedTile &&
+            tile.type == "door" &&
+            held?.type == "key") {
             gameState.player.holding = null;
-            tile.spriteSheet = sprites.texture_sheet_bricks_ground;
+            tile.frontSpriteSheet = sprites.texture_sheet_doorframe;
+            tile.backSpriteSheet = sprites.texture_sheet_doorframe;
             tile.colision = false;
             return;
         }

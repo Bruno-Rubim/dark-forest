@@ -1,6 +1,6 @@
 import { gameState } from "../gameState.js";
-import {} from "./tile.js";
-import { tileFactory } from "./tileFactory.js";
+import {} from "../tile/tile.js";
+import { tileFactory } from "../tile/tileFactory.js";
 export const mapMatrix = [];
 async function loadMapFromImage(imageSrc, onLoaded) {
     const img = new Image();
