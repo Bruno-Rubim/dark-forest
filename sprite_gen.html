@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sprite gen</title>
+  </head>
+  <body>
+    <input type="text" value="grass" />
+    <br />
+    <button onclick="genBlock()">block</button>
+    <br />
+    <button onclick="genGround()">ground</button>
+    <br />
+    <img src="./images/texture_dirt.png" hidden />
+    <canvas></canvas>
+  </body>
+</html>
+<script>
+  const image = document.querySelector("img");
+  const input = document.querySelector("input");
+  const canvas = document.querySelector("canvas");
+  canvas.width = 1024;
+  canvas.height = 512;
+  const ctx = canvas.getContext("2d");
+
+  function vectorDist(a, b) {
+    const [ax, ay] = a;
+    const [bx, by] = b;
+
+    const deltaX = bx - ax;
+    const deltaY = by - ay;
+
+    return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+  }
+
+  function interp(a, b, w) {
+    const [ax, ay] = a;
+    const [bx, by] = b;
+
+    const deltaX = bx - ax;
+    const deltaY = by - ay;
+
+    const resX = ax + deltaX * w;
+    const resY = ay + deltaY * w;
+
+    return [resX, resY];
+  }
+
+  function genSpriteMap(a, b, c, d, nx, ny, shiftX, shiftY) {
+    a[0] += shiftX;
+    b[0] += shiftX;
+    c[0] += shiftX;
+    d[0] += shiftX;
+    a[1] += shiftY;
+    b[1] += shiftY;
+    c[1] += shiftY;
+    d[1] += shiftY;
+
+    let [ax, ay] = a; // Esquerdo Superior
+    let [bx, by] = b; // Direito Superior
+    let [cx, cy] = c; // Esquerdo Inferior
+    let [dx, dy] = d; // Direito Inferior
+    const mapDict = {};
+
+    for (let x = 0; x < nx; x++) {
+      const progress = x / (nx - 1);
+      const colTop = interp(a, b, progress);
+      const colBot = interp(c, d, progress);
+
+      for (let y = 0; y < ny; y++) {
+        const pixelCoords = interp(colTop, colBot, y / (ny - 1));
+        const roundPixCoords = pixelCoords.map(Math.round);
+        const [rx, ry] = roundPixCoords;
+        const dist = vectorDist(pixelCoords, roundPixCoords);
+
+        const key = rx + "," + ry;
+        if (!mapDict[key] || dist < mapDict[key].dist) {
+          mapDict[key] = {
+            x: x,
+            y: y,
+            dist: dist,
+          };
+        }
+      }
+    }
+    return mapDict;
+  }
+
+  function getImageData(image) {
+    const { width, height } = image;
+    const tempCanvas = document.createElement("canvas");
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCanvas.width = width;
+    tempCanvas.height = height;
+    tempCtx.drawImage(image, 0, 0);
+
+    const imgData = tempCtx.getImageData(0, 0, width, height);
+
+    const valueMatrix = Array.from({ length: width }, () => Array(height));
+
+    for (let y = 0; y < height; y++) {
+      const lineStart = width * y * 4;
+      for (let x = 0; x < width; x++) {
+        const index = lineStart + x * 4;
+        const r = imgData.data[index];
+        const g = imgData.data[index + 1];
+        const b = imgData.data[index + 2];
+        const a = imgData.data[index + 3];
+        valueMatrix[x][y] = `rgba(${r},${g},${b},${a})`;
+      }
+    }
+    return valueMatrix;
+  }
+
+  function drawTexture(a, b, c, d, i) {
+    ctx.save();
+    const startDrawX = (i % 8) * 128;
+    const startDrawY = Math.floor(i / 8) * 128;
+
+    ctx.beginPath();
+    ctx.rect(startDrawX, startDrawY, 128, 128); // x, y, width, height
+    ctx.clip();
+
+    const mapDict = genSpriteMap(a, b, c, d, 128, 128, startDrawX, startDrawY);
+    const valueMatrix = getImageData(image);
+    for (const key in mapDict) {
+      const [resultX, resultY] = key.split(",").map(Number);
+      const { x, y } = mapDict[key];
+
+      const color = valueMatrix[x][y];
+      ctx.fillStyle = color;
+      ctx.fillRect(resultX, resultY, 1, 1);
+    }
+
+    ctx.restore();
+  }
+
+  async function genBlock() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    await new Promise((resolve, reject) => {
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = "./images/texture_" + input.value + ".png";
+    });
+    drawTexture([-29, -29], [12, 12], [-29, 157], [12, 115], 0);
+    drawTexture([115, 12], [156, -29], [115, 115], [156, 156], 2);
+    drawTexture([-89, 12], [11, 12], [-89, 115], [11, 115], 3);
+    drawTexture([12, 12], [32, 32], [12, 115], [32, 95], 3);
+    drawTexture([12, 12], [115, 12], [12, 115], [115, 115], 4);
+    drawTexture([116, 12], [216, 12], [116, 115], [216, 115], 5);
+    drawTexture([95, 32], [115, 12], [95, 95], [115, 115], 5);
+    drawTexture([-27, 33], [5, 44], [-27, 94], [5, 83], 6);
+    drawTexture([-27, 33], [32, 33], [-29, 94], [32, 94], 7);
+    drawTexture([33, 33], [44, 44], [33, 94], [44, 83], 7);
+    drawTexture([33, 33], [94, 33], [33, 94], [94, 94], 8);
+    drawTexture([83, 44], [94, 33], [83, 83], [94, 94], 9);
+    drawTexture([95, 33], [154, 33], [95, 94], [154, 94], 9);
+    drawTexture([122, 44], [154, 33], [122, 83], [154, 94], 10);
+    drawTexture([-31, 45], [6, 45], [-31, 82], [6, 82], 11);
+    drawTexture([7, 45], [26, 51], [7, 82], [26, 76], 11);
+    drawTexture([6, 45], [44, 45], [6, 82], [44, 82], 12);
+    drawTexture([45, 45], [51, 51], [45, 82], [51, 76], 12);
+    drawTexture([45, 45], [82, 45], [45, 82], [82, 82], 13);
+    drawTexture([83, 45], [121, 45], [83, 82], [121, 82], 14);
+    drawTexture([76, 51], [82, 45], [76, 76], [82, 82], 14);
+    drawTexture([101, 51], [120, 45], [101, 76], [120, 82], 15);
+    drawTexture([121, 45], [158, 45], [121, 82], [158, 82], 15);
+    drawTexture([0, 52], [26, 52], [0, 75], [26, 75], 16);
+    drawTexture([27, 52], [51, 52], [27, 75], [51, 75], 17);
+    drawTexture([52, 52], [75, 52], [52, 75], [75, 75], 18);
+    drawTexture([76, 52], [100, 52], [76, 75], [100, 75], 19);
+    drawTexture([101, 52], [127, 52], [101, 75], [127, 75], 20);
+
+    drawTexture([0, 0], [127, 0], [0, 127], [127, 127], 31);
+  }
+
+  async function genGround() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    await new Promise((resolve, reject) => {
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = "./images/texture_" + input.value + ".png";
+    });
+    drawTexture([-90, 116], [11, 116], [-116, 156], [-29, 156], 0);
+    drawTexture([12, 116], [115, 116], [-28, 156], [155, 156], 1);
+    drawTexture([116, 116], [217, 116], [156, 156], [339, 156], 2);
+    drawTexture([-27, 95], [32, 95], [-89, 115], [12, 115], 3);
+    drawTexture([33, 95], [94, 95], [13, 115], [114, 115], 4);
+    drawTexture([95, 95], [154, 95], [115, 115], [216, 115], 5);
+    drawTexture([-31, 83], [5, 83], [-86, 94], [-27, 94], 6);
+    drawTexture([6, 83], [44, 83], [-26, 94], [33, 94], 7);
+    drawTexture([45, 83], [82, 83], [34, 94], [93, 94], 8);
+    drawTexture([83, 83], [121, 83], [94, 94], [153, 94], 9);
+    drawTexture([122, 83], [158, 83], [154, 94], [212, 94], 10);
+    drawTexture([2, 76], [26, 76], [-31, 82], [4, 82], 11);
+    drawTexture([28, 76], [51, 76], [7, 82], [45, 82], 12);
+    drawTexture([52, 76], [75, 76], [46, 82], [81, 82], 13);
+    drawTexture([76, 76], [100, 76], [82, 82], [120, 82], 14);
+    drawTexture([101, 76], [154, 76], [121, 82], [158, 82], 15);
+
+    drawTexture([0, 0], [127, 0], [0, 127], [127, 127], 31);
+  }
+
+  genGround();
+</script>
