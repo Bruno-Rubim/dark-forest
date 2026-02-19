@@ -66,6 +66,16 @@ class TileContentFactory {
           canBeTaken: true,
           colision: true,
         });
+      case "858585":
+        return new TileContent({
+          type: "bucket",
+          spriteSheet: sprites.texture_sheet_bucket,
+          placedOn: ["grass"],
+          isAlt: false,
+          canAlt: false,
+          canBeTaken: true,
+          colision: true,
+        });
       case "000":
         return null;
     }

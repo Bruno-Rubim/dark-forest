@@ -26,11 +26,11 @@ export default class GameManager {
 
   constructor() {
     bindListeners(canvasManager.canvasElement);
-    loadMap(overworld, "overworld").then(() => {});
-    loadMap(underground, "underground").then(() => {
+    loadMap(overworld, "overworld").then(() => {
       this.mapLoaded = true;
-      gameState.currentMap = underground;
+      gameState.currentMap = overworld;
     });
+    loadMap(underground, "underground").then(() => {});
   }
 
   interaction() {
@@ -40,6 +40,12 @@ export default class GameManager {
     if (tile.content?.type == "door" && held?.type == "key") {
       gameState.player.holding = null;
       tile.content = null;
+      return;
+    }
+    if (tile.content?.type == "well" && held?.type == "bucket") {
+      gameState.player.holding = null;
+      tile.content.type = "well_bucket";
+      tile.content.spriteSheet = sprites.texture_sheet_well_bucket;
       return;
     }
     if (

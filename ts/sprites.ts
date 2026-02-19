@@ -32,6 +32,9 @@ export const sprites = {
     "texture_sheet_shadow_tall_block",
   ),
   texture_sheet_shadow_top_block: new Sprite("texture_sheet_shadow_top_block"),
+  texture_sheet_shadow_full_block: new Sprite(
+    "texture_sheet_shadow_full_block",
+  ),
   texture_sheet_shadow_ceiling: new Sprite("texture_sheet_shadow_ceiling"),
 
   texture_sheet_blue: new Sprite("texture_sheet_blue"),
@@ -58,6 +61,8 @@ export const sprites = {
   texture_sheet_flower: new Sprite("texture_sheet_flower"),
   texture_sheet_key: new Sprite("texture_sheet_key"),
   texture_sheet_well: new Sprite("texture_sheet_well"),
+  texture_sheet_well_bucket: new Sprite("texture_sheet_well_bucket"),
+  texture_sheet_bucket: new Sprite("texture_sheet_bucket"),
 };
 
 const spriteArr = Object.values(sprites);

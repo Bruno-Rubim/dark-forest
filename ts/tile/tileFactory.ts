@@ -19,7 +19,7 @@ class TileFactory {
         return new Tile({
           type: "sewer_rock",
           spriteSheet: sprites.texture_sheet_sewer_rock,
-          shadowSpriteSheet: sprites.texture_sheet_shadow_tall_block,
+          shadowSpriteSheet: sprites.texture_sheet_shadow_full_block,
           canAlt: true,
           isGround: false,
           colision: true,
@@ -118,6 +118,16 @@ class TileFactory {
             colision: true,
           }),
         });
+      case "128115106":
+        return new Tile({
+          type: "well_hole",
+          spriteSheet: sprites.void,
+          canAlt: true,
+          isGround: false,
+          colision: true,
+          isAlt: isAlt,
+        });
+
       case "1095453":
         return new Tile({
           type: "dirt_pit",
