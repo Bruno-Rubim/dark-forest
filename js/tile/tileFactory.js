@@ -1,6 +1,4 @@
-import { WEST } from "../global.js";
 import { sprites } from "../sprites.js";
-import { DirectedTile } from "./directedTile.js";
 import { Tile } from "./tile.js";
 import { TileContent } from "./tileContent.js";
 class TileFactory {
@@ -16,6 +14,26 @@ class TileFactory {
                     colision: true,
                     isAlt: isAlt,
                 });
+            case "746032":
+                return new Tile({
+                    type: "sewer_rock",
+                    spriteSheet: sprites.texture_sheet_sewer_rock,
+                    shadowSpriteSheet: sprites.texture_sheet_shadow_full_block,
+                    canAlt: true,
+                    isGround: false,
+                    colision: true,
+                    isAlt: isAlt,
+                });
+            case "28140":
+                return new Tile({
+                    type: "sewer_rock_ceiling",
+                    spriteSheet: sprites.texture_sheet_sewer_rock_ceiling,
+                    shadowSpriteSheet: sprites.texture_sheet_shadow_ceiling,
+                    canAlt: true,
+                    isGround: false,
+                    colision: false,
+                    isAlt: isAlt,
+                });
             case "182730":
                 return new Tile({
                     type: "bricks",
@@ -26,39 +44,21 @@ class TileFactory {
                     colision: true,
                     isAlt: isAlt,
                 });
+            case "1827336":
+                return new Tile({
+                    type: "brick_ceiling",
+                    spriteSheet: sprites.texture_sheet_brick_ceiling,
+                    shadowSpriteSheet: sprites.texture_sheet_shadow_top_block,
+                    canAlt: true,
+                    isGround: false,
+                    colision: false,
+                    isAlt: isAlt,
+                });
             case "287331":
                 return new Tile({
                     type: "hedge",
                     spriteSheet: sprites.texture_sheet_hedge,
                     shadowSpriteSheet: sprites.texture_sheet_shadow_block,
-                    canAlt: true,
-                    isGround: false,
-                    colision: true,
-                    isAlt: isAlt,
-                });
-            case "1389041":
-                return new DirectedTile({
-                    type: "door",
-                    facing: 3,
-                    spriteSheet: sprites.texture_sheet_door,
-                    rightSpriteSheet: sprites.texture_sheet_doorframe,
-                    backhSpriteSheet: sprites.texture_sheet_door,
-                    leftSpriteSheet: sprites.texture_sheet_doorframe,
-                    shadowSpriteSheet: sprites.texture_sheet_shadow_top_block,
-                    canAlt: true,
-                    isGround: false,
-                    colision: true,
-                    isAlt: isAlt,
-                });
-            case "91531":
-                return new DirectedTile({
-                    type: "door",
-                    facing: 2,
-                    spriteSheet: sprites.texture_sheet_door,
-                    rightSpriteSheet: sprites.texture_sheet_doorframe,
-                    backhSpriteSheet: sprites.texture_sheet_door,
-                    leftSpriteSheet: sprites.texture_sheet_doorframe,
-                    shadowSpriteSheet: sprites.texture_sheet_shadow_top_block,
                     canAlt: true,
                     isGround: false,
                     colision: true,
@@ -98,7 +98,7 @@ class TileFactory {
                         colision: true,
                     }),
                 });
-            case "2682249":
+            case "12010899":
                 return new Tile({
                     type: "grass",
                     spriteSheet: sprites.texture_sheet_grass,
@@ -107,32 +107,22 @@ class TileFactory {
                     colision: false,
                     isAlt: isAlt,
                     content: new TileContent({
-                        type: "flower",
-                        spriteSheet: sprites.texture_sheet_flower,
-                        placedOn: ["dirt_pit", "grass"],
-                        isAlt: false,
+                        type: "well",
+                        spriteSheet: sprites.texture_sheet_well,
+                        isAlt: isAlt,
                         canAlt: false,
-                        canBeTaken: true,
+                        canBeTaken: false,
                         colision: true,
                     }),
                 });
-            case "114856":
+            case "128115106":
                 return new Tile({
-                    type: "grass",
-                    spriteSheet: sprites.texture_sheet_grass,
+                    type: "well_hole",
+                    spriteSheet: sprites.void,
                     canAlt: true,
-                    isGround: true,
-                    colision: false,
+                    isGround: false,
+                    colision: true,
                     isAlt: isAlt,
-                    content: new TileContent({
-                        type: "key",
-                        spriteSheet: sprites.texture_sheet_key,
-                        placedOn: ["grass"],
-                        isAlt: false,
-                        canAlt: false,
-                        canBeTaken: true,
-                        colision: true,
-                    }),
                 });
             case "1095453":
                 return new Tile({
