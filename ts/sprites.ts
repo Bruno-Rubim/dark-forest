@@ -23,6 +23,8 @@ export class Sprite {
 
 export const sprites = {
   "9s": new Sprite("9s"),
+  void: new Sprite("void"),
+
   ground_shadow: new Sprite("ground_shadow"),
 
   texture_sheet_shadow_block: new Sprite("texture_sheet_shadow_block"),
@@ -30,6 +32,10 @@ export const sprites = {
     "texture_sheet_shadow_tall_block",
   ),
   texture_sheet_shadow_top_block: new Sprite("texture_sheet_shadow_top_block"),
+  texture_sheet_shadow_full_block: new Sprite(
+    "texture_sheet_shadow_full_block",
+  ),
+  texture_sheet_shadow_ceiling: new Sprite("texture_sheet_shadow_ceiling"),
 
   texture_sheet_blue: new Sprite("texture_sheet_blue"),
   texture_sheet_green: new Sprite("texture_sheet_green"),
@@ -40,17 +46,23 @@ export const sprites = {
   texture_sheet_grass: new Sprite("texture_sheet_grass"),
   texture_sheet_dirt: new Sprite("texture_sheet_dirt"),
   texture_sheet_dirt_pit: new Sprite("texture_sheet_dirt_pit"),
-  texture_sheet_rock_ground: new Sprite("texture_sheet_rock_ground"),
 
   texture_sheet_hedge: new Sprite("texture_sheet_hedge"),
   texture_sheet_rock: new Sprite("texture_sheet_rock"),
+  texture_sheet_sewer_rock: new Sprite("texture_sheet_sewer_rock"),
+  texture_sheet_sewer_rock_ceiling: new Sprite(
+    "texture_sheet_sewer_rock_ceiling",
+  ),
   texture_sheet_bricks: new Sprite("texture_sheet_bricks"),
+  texture_sheet_brick_ceiling: new Sprite("texture_sheet_brick_ceiling"),
   texture_sheet_door: new Sprite("texture_sheet_door"),
-  texture_sheet_doorframe: new Sprite("texture_sheet_doorframe"),
 
   texture_sheet_tree: new Sprite("texture_sheet_tree"),
   texture_sheet_flower: new Sprite("texture_sheet_flower"),
   texture_sheet_key: new Sprite("texture_sheet_key"),
+  texture_sheet_well: new Sprite("texture_sheet_well"),
+  texture_sheet_well_bucket: new Sprite("texture_sheet_well_bucket"),
+  texture_sheet_bucket: new Sprite("texture_sheet_bucket"),
 };
 
 const spriteArr = Object.values(sprites);
