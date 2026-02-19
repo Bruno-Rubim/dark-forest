@@ -32,6 +32,7 @@ export const sprites = {
     "texture_sheet_shadow_tall_block",
   ),
   texture_sheet_shadow_top_block: new Sprite("texture_sheet_shadow_top_block"),
+  texture_sheet_shadow_ceiling: new Sprite("texture_sheet_shadow_ceiling"),
 
   texture_sheet_blue: new Sprite("texture_sheet_blue"),
   texture_sheet_green: new Sprite("texture_sheet_green"),
@@ -45,8 +46,12 @@ export const sprites = {
 
   texture_sheet_hedge: new Sprite("texture_sheet_hedge"),
   texture_sheet_rock: new Sprite("texture_sheet_rock"),
+  texture_sheet_sewer_rock: new Sprite("texture_sheet_sewer_rock"),
+  texture_sheet_sewer_rock_ceiling: new Sprite(
+    "texture_sheet_sewer_rock_ceiling",
+  ),
   texture_sheet_bricks: new Sprite("texture_sheet_bricks"),
-  texture_sheet_brick_ground: new Sprite("texture_sheet_brick_ground"),
+  texture_sheet_brick_ceiling: new Sprite("texture_sheet_brick_ceiling"),
   texture_sheet_door: new Sprite("texture_sheet_door"),
 
   texture_sheet_tree: new Sprite("texture_sheet_tree"),

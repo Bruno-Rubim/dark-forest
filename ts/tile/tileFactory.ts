@@ -15,6 +15,26 @@ class TileFactory {
           colision: true,
           isAlt: isAlt,
         });
+      case "746032":
+        return new Tile({
+          type: "sewer_rock",
+          spriteSheet: sprites.texture_sheet_sewer_rock,
+          shadowSpriteSheet: sprites.texture_sheet_shadow_tall_block,
+          canAlt: true,
+          isGround: false,
+          colision: true,
+          isAlt: isAlt,
+        });
+      case "28140":
+        return new Tile({
+          type: "sewer_rock_ceiling",
+          spriteSheet: sprites.texture_sheet_sewer_rock_ceiling,
+          shadowSpriteSheet: sprites.texture_sheet_shadow_ceiling,
+          canAlt: true,
+          isGround: false,
+          colision: false,
+          isAlt: isAlt,
+        });
       case "182730":
         return new Tile({
           type: "bricks",
@@ -27,8 +47,8 @@ class TileFactory {
         });
       case "1827336":
         return new Tile({
-          type: "brick_ground",
-          spriteSheet: sprites.texture_sheet_brick_ground,
+          type: "brick_ceiling",
+          spriteSheet: sprites.texture_sheet_brick_ceiling,
           shadowSpriteSheet: sprites.texture_sheet_shadow_top_block,
           canAlt: true,
           isGround: false,

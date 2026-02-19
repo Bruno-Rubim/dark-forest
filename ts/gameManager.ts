@@ -12,12 +12,13 @@ import {
 } from "./global.js";
 import type { Action } from "./action.js";
 import { timerManager } from "./timer/timerManager.js";
-import { loadMap, loadMapContent, mapMatrix } from "./map/map.js";
 import Position from "./gameElements/position.js";
 import { gameState } from "./gameState.js";
 import type { Tile } from "./tile/tile.js";
 import { sprites } from "./sprites.js";
 import type { TileContent } from "./tile/tileContent.js";
+import { loadMap } from "./map/loadMap.js";
+import { overworld, underground } from "./map/maps.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
 export default class GameManager {
@@ -25,16 +26,16 @@ export default class GameManager {
 
   constructor() {
     bindListeners(canvasManager.canvasElement);
-    loadMap().then(() => {
-      loadMapContent().then(() => {
-        this.mapLoaded = true;
-      });
+    loadMap(overworld, "overworld").then(() => {});
+    loadMap(underground, "underground").then(() => {
+      this.mapLoaded = true;
+      gameState.currentMap = underground;
     });
   }
 
   interaction() {
     const tilePos = gameState.player.frontCoords;
-    const tile = mapMatrix[tilePos.y]![tilePos.x]!;
+    const tile = gameState.currentMap[tilePos.y]![tilePos.x]!;
     const held = gameState.player.holding;
     if (tile.content?.type == "door" && held?.type == "key") {
       gameState.player.holding = null;
@@ -48,10 +49,10 @@ export default class GameManager {
       return;
     }
     if (tile.type == "dirt_pit" && held?.type == "flower") {
-      mapMatrix[22]![28]!.content = null;
-      mapMatrix[23]![28]!.content = null;
-      mapMatrix[24]![28]!.content = null;
-      mapMatrix[25]![28]!.content = null;
+      gameState.currentMap[22]![28]!.content = null;
+      gameState.currentMap[23]![28]!.content = null;
+      gameState.currentMap[24]![28]!.content = null;
+      gameState.currentMap[25]![28]!.content = null;
     }
     gameState.player.holding = tile.content;
     tile.content = held;
@@ -104,22 +105,22 @@ export default class GameManager {
     }
     if (inputState.keyboard.w == "pressed") {
       inputState.keyboard.w = "read";
-      gameState.player.move(gameState.player.frontCard);
+      gameState.player.move(gameState.player.frontCard, gameState.currentMap);
       return;
     }
     if (inputState.keyboard.s == "pressed") {
       inputState.keyboard.s = "read";
-      gameState.player.move(gameState.player.backCard);
+      gameState.player.move(gameState.player.backCard, gameState.currentMap);
       return;
     }
     if (inputState.keyboard.q == "pressed") {
       inputState.keyboard.q = "read";
-      gameState.player.move(gameState.player.leftCard);
+      gameState.player.move(gameState.player.leftCard, gameState.currentMap);
       return;
     }
     if (inputState.keyboard.e == "pressed") {
       inputState.keyboard.e = "read";
-      gameState.player.move(gameState.player.rightCard);
+      gameState.player.move(gameState.player.rightCard, gameState.currentMap);
       return;
     }
     if (inputState.keyboard.a == "pressed") {
@@ -197,7 +198,8 @@ export default class GameManager {
     }
     relPosList.forEach((p, i) => {
       let tile =
-        mapMatrix[startingTile.y + p.y]?.[startingTile.x + p.x] ?? null;
+        gameState.currentMap[startingTile.y + p.y]?.[startingTile.x + p.x] ??
+        null;
 
       if (!tile) {
         return;

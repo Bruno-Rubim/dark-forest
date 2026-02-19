@@ -8,7 +8,6 @@ import {
   WEST,
   type Cardinals,
 } from "./global.js";
-import { mapMatrix } from "./map/map.js";
 import type { Tile } from "./tile/tile.js";
 import type { TileContent } from "./tile/tileContent.js";
 
@@ -50,20 +49,20 @@ export class Player {
     }
   }
 
-  getBlockAdj(dir: Cardinals): Tile | null {
+  getBlockAdj(dir: Cardinals, map: (Tile | null)[][]): Tile | null {
     let tile = null;
     switch (dir) {
       case NORTH:
-        tile = mapMatrix[this.pos.y - 1]?.[this.pos.x] ?? null;
+        tile = map[this.pos.y - 1]?.[this.pos.x] ?? null;
         break;
       case SOUTH:
-        tile = mapMatrix[this.pos.y + 1]?.[this.pos.x] ?? null;
+        tile = map[this.pos.y + 1]?.[this.pos.x] ?? null;
         break;
       case EAST:
-        tile = mapMatrix[this.pos.y]?.[this.pos.x + 1] ?? null;
+        tile = map[this.pos.y]?.[this.pos.x + 1] ?? null;
         break;
       case WEST:
-        tile = mapMatrix[this.pos.y]?.[this.pos.x - 1] ?? null;
+        tile = map[this.pos.y]?.[this.pos.x - 1] ?? null;
         break;
     }
     return tile;
@@ -78,29 +77,29 @@ export class Player {
     }
   }
 
-  move(dir: Cardinals) {
+  move(dir: Cardinals, map: (Tile | null)[][]) {
     let tile;
     switch (dir) {
       case NORTH:
-        tile = this.getBlockAdj(NORTH);
+        tile = this.getBlockAdj(NORTH, map);
         if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(0, -1);
         }
         break;
       case SOUTH:
-        tile = this.getBlockAdj(SOUTH);
+        tile = this.getBlockAdj(SOUTH, map);
         if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(0, 1);
         }
         break;
       case EAST:
-        tile = this.getBlockAdj(EAST);
+        tile = this.getBlockAdj(EAST, map);
         if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(1, 0);
         }
         break;
       case WEST:
-        tile = this.getBlockAdj(WEST);
+        tile = this.getBlockAdj(WEST, map);
         if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(-1, 0);
         }
