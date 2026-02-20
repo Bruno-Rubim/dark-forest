@@ -48,7 +48,7 @@ class TileContentFactory {
                 return new TileContent({
                     type: "flower",
                     spriteSheet: sprites.texture_sheet_flower,
-                    placedOn: ["dirt_pit", "grass"],
+                    placedOn: ["dirt_pit", "grass", "well"],
                     isAlt: false,
                     canAlt: false,
                     canBeTaken: true,
@@ -58,7 +58,7 @@ class TileContentFactory {
                 return new TileContent({
                     type: "key",
                     spriteSheet: sprites.texture_sheet_key,
-                    placedOn: genericGround,
+                    placedOn: [...genericGround, "well"],
                     isAlt: false,
                     canAlt: false,
                     canBeTaken: true,

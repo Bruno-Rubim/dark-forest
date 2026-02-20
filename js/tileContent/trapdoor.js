@@ -19,7 +19,7 @@ export default class Trapdoor extends TileContent {
             facing: facing,
         });
         this.id = x + "," + y;
-        gameState.trapdoors[this.id] = { open: false };
+        gameState.trapdoors[this.id] = { open: true };
     }
     get open() {
         return gameState.trapdoors[this.id].open;

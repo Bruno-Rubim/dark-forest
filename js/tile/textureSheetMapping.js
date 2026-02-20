@@ -26,6 +26,7 @@ export const tileSheetPosList = [
     new Position(2, 0),
     new Position(1, 0),
     new Position(7, 3),
+    new Position(6, 3),
 ];
 export const altTileSheetPosList = [
     new Position(4, 2),

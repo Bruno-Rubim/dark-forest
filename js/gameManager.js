@@ -9,15 +9,17 @@ import { loadMap } from "./map/loadMap.js";
 import { overworld, underground } from "./map/maps.js";
 import Well from "./tileContent/well.js";
 import Trapdoor from "./tileContent/trapdoor.js";
+import { WellHole } from "./tile/wellHole.js";
 export default class GameManager {
     mapLoaded = false;
     constructor() {
         bindListeners(canvasManager.canvasElement);
         loadMap(overworld, "overworld").then(() => {
             this.mapLoaded = true;
+            gameState.currentMap = overworld;
         });
-        loadMap(underground, "underground").then(() => { });
-        gameState.currentMap = overworld;
+        loadMap(underground, "underground").then(() => {
+        });
     }
     interaction() {
         const tilePos = gameState.player.frontCoords;
@@ -29,14 +31,11 @@ export default class GameManager {
             return;
         }
         if (tile.content instanceof Trapdoor) {
-            if (held?.type == "key") {
+            if (held?.type == "key" && !tile.content.open) {
                 gameState.player.holding = null;
                 gameState.trapdoors[tile.content.id].open = true;
             }
-            if (held?.type == "ladder") {
-                if (!tile.content.open) {
-                    return;
-                }
+            if (held?.type == "ladder" && tile.content.open) {
                 if (gameState.currentMap == overworld) {
                     gameState.currentMap = underground;
                 }
@@ -62,6 +61,11 @@ export default class GameManager {
         }
         if (tile.content instanceof Well) {
             gameState.player.holding = tile.content.interact(held);
+            return;
+        }
+        if (tile instanceof WellHole) {
+            console.log("well hole");
+            gameState.player.holding = tile.interact(held);
             return;
         }
         if ((tile.content && !tile.content?.canBeTaken) ||

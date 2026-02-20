@@ -33,5 +33,23 @@ export class WellHole extends Tile {
             return;
         }
         canvasManager.renderSpriteFromSheet(spriteSheet, new Position(), GAMEWIDTH, GAMEHEIGHT, sheetPos, 128, 128);
+        if (gameState.well.holding &&
+            gameState.well.height == -2 &&
+            queueNum == 19) {
+            gameState.well.holding.render(26, false);
+        }
+    }
+    interact(item) {
+        const wellState = gameState.well;
+        if (!wellState.bucket) {
+            return item;
+        }
+        if (!item || item.placedOn.includes("well")) {
+            const retItem = wellState.holding;
+            wellState.holding = item;
+            console.log(retItem);
+            return retItem;
+        }
+        return item;
     }
 }
