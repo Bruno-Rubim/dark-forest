@@ -5,7 +5,11 @@ import Well from "../tileContent/well.js";
 import { WellHole } from "./wellHole.js";
 
 class TileFactory {
-  createTile(colorValue: string, isAlt: boolean): Tile | null {
+  createTile(
+    colorValue: string,
+    isAlt: boolean,
+    xy: string,
+  ): Tile | null | undefined {
     switch (colorValue) {
       case "146146146":
         return new Tile({
@@ -172,7 +176,7 @@ class TileFactory {
         });
     }
     console.warn(colorValue + " not in table");
-    return null;
+    return undefined;
   }
 }
 

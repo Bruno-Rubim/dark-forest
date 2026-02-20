@@ -20,6 +20,7 @@ import type { TileContent } from "./tileContent/tileContent.js";
 import { loadMap } from "./map/loadMap.js";
 import { overworld, underground } from "./map/maps.js";
 import Well from "./tileContent/well.js";
+import Trapdoor from "./tileContent/trapdoor.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
 export default class GameManager {
@@ -27,11 +28,11 @@ export default class GameManager {
 
   constructor() {
     bindListeners(canvasManager.canvasElement);
-    loadMap(overworld, "overworld").then(() => {});
-    loadMap(underground, "underground").then(() => {
+    loadMap(overworld, "overworld").then(() => {
       this.mapLoaded = true;
     });
-    gameState.currentMap = underground;
+    loadMap(underground, "underground").then(() => {});
+    gameState.currentMap = overworld;
   }
 
   interaction() {
@@ -41,6 +42,11 @@ export default class GameManager {
     if (tile.content?.type == "door" && held?.type == "key") {
       gameState.player.holding = null;
       tile.content = null;
+      return;
+    }
+    if (tile.content instanceof Trapdoor && held?.type == "key") {
+      gameState.player.holding = tile.content.interact(held);
+      gameState.trapdoors[tile.content.id]!.open = true;
       return;
     }
     if (tile.content instanceof Well) {
@@ -108,40 +114,54 @@ export default class GameManager {
       inputState.keyboard.Escape = "read";
       return;
     }
+    let movedTile: Tile | null | undefined = null;
     if (inputState.keyboard.w == "pressed") {
       inputState.keyboard.w = "read";
-      gameState.player.move(gameState.player.frontCard, gameState.currentMap);
-      return;
+      movedTile = gameState.player.move(
+        gameState.player.frontCard,
+        gameState.currentMap,
+      );
     }
     if (inputState.keyboard.s == "pressed") {
       inputState.keyboard.s = "read";
-      gameState.player.move(gameState.player.backCard, gameState.currentMap);
-      return;
+      movedTile = gameState.player.move(
+        gameState.player.backCard,
+        gameState.currentMap,
+      );
     }
     if (inputState.keyboard.q == "pressed") {
       inputState.keyboard.q = "read";
-      gameState.player.move(gameState.player.leftCard, gameState.currentMap);
-      return;
+      movedTile = gameState.player.move(
+        gameState.player.leftCard,
+        gameState.currentMap,
+      );
     }
     if (inputState.keyboard.e == "pressed") {
       inputState.keyboard.e = "read";
-      gameState.player.move(gameState.player.rightCard, gameState.currentMap);
-      return;
+      movedTile = gameState.player.move(
+        gameState.player.rightCard,
+        gameState.currentMap,
+      );
     }
     if (inputState.keyboard.a == "pressed") {
       inputState.keyboard.a = "read";
       gameState.player.turn(LEFT);
-      return;
     }
     if (inputState.keyboard.d == "pressed") {
       inputState.keyboard.d = "read";
       gameState.player.turn(RIGHT);
-      return;
     }
     if (inputState.keyboard[" "] == "pressed") {
       inputState.keyboard[" "] = "read";
       this.interaction();
-      return;
+    }
+
+    if (movedTile?.content instanceof Trapdoor && movedTile.content.open) {
+      if (gameState.currentMap == overworld) {
+        gameState.currentMap = underground;
+      } else {
+        gameState.currentMap = overworld;
+      }
     }
   }
 

@@ -66,6 +66,14 @@ export const sprites = {
   texture_sheet_well_hole_down: new Sprite("texture_sheet_well_hole_down"),
   texture_sheet_well_hole_mid: new Sprite("texture_sheet_well_hole_mid"),
   texture_sheet_bucket: new Sprite("texture_sheet_bucket"),
+  texture_sheet_trapdoor_open: new Sprite("texture_sheet_trapdoor_open"),
+  texture_sheet_trapdoor_closed: new Sprite("texture_sheet_trapdoor_closed"),
+  texture_sheet_trapdoor_ceiling_open: new Sprite(
+    "texture_sheet_trapdoor_ceiling_open",
+  ),
+  texture_sheet_trapdoor_ceiling_closed: new Sprite(
+    "texture_sheet_trapdoor_ceiling_closed",
+  ),
 };
 
 const spriteArr = Object.values(sprites);
