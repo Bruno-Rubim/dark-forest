@@ -16,9 +16,10 @@ import Position from "./gameElements/position.js";
 import { gameState } from "./gameState.js";
 import type { Tile } from "./tile/tile.js";
 import { sprites } from "./sprites.js";
-import type { TileContent } from "./tile/tileContent.js";
+import type { TileContent } from "./tileContent/tileContent.js";
 import { loadMap } from "./map/loadMap.js";
 import { overworld, underground } from "./map/maps.js";
+import Well from "./tileContent/well.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
 export default class GameManager {
@@ -26,11 +27,11 @@ export default class GameManager {
 
   constructor() {
     bindListeners(canvasManager.canvasElement);
-    loadMap(overworld, "overworld").then(() => {
+    loadMap(overworld, "overworld").then(() => {});
+    loadMap(underground, "underground").then(() => {
       this.mapLoaded = true;
-      gameState.currentMap = overworld;
     });
-    loadMap(underground, "underground").then(() => {});
+    gameState.currentMap = underground;
   }
 
   interaction() {
@@ -42,10 +43,8 @@ export default class GameManager {
       tile.content = null;
       return;
     }
-    if (tile.content?.type == "well" && held?.type == "bucket") {
-      gameState.player.holding = null;
-      tile.content.type = "well_bucket";
-      tile.content.spriteSheet = sprites.texture_sheet_well_bucket;
+    if (tile.content instanceof Well) {
+      gameState.player.holding = tile.content.interact(held);
       return;
     }
     if (

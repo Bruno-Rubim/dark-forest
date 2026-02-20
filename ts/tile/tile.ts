@@ -7,7 +7,7 @@ import {
   altTileSheetPosList,
   tileSheetPosList,
 } from "./textureSheetMapping.js";
-import { TileContent } from "./tileContent.js";
+import { TileContent } from "../tileContent/tileContent.js";
 
 export class Tile {
   spriteSheet: Sprite | null;

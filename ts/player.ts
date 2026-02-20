@@ -9,7 +9,7 @@ import {
   type Cardinals,
 } from "./global.js";
 import type { Tile } from "./tile/tile.js";
-import type { TileContent } from "./tile/tileContent.js";
+import type { TileContent } from "./tileContent/tileContent.js";
 
 export class Player {
   pos: Position;

@@ -1,6 +1,6 @@
 import { gameState } from "../gameState.js";
 import type { Tile } from "../tile/tile.js";
-import { tileContentFactory } from "../tile/tileContentFactory.js";
+import { tileContentFactory } from "../tileContent/tileContentFactory.js";
 import { tileFactory } from "../tile/tileFactory.js";
 
 async function loadMapFromImage(

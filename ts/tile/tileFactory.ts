@@ -1,6 +1,8 @@
 import { sprites } from "../sprites.js";
 import { Tile } from "./tile.js";
-import { TileContent } from "./tileContent.js";
+import { TileContent } from "../tileContent/tileContent.js";
+import Well from "../tileContent/well.js";
+import { WellHole } from "./wellHole.js";
 
 class TileFactory {
   createTile(colorValue: string, isAlt: boolean): Tile | null {
@@ -75,15 +77,6 @@ class TileFactory {
           colision: false,
           isAlt: isAlt,
         });
-      case "906660":
-        return new Tile({
-          type: "dirt",
-          spriteSheet: sprites.texture_sheet_dirt,
-          isGround: true,
-          colision: false,
-          isAlt: isAlt,
-        });
-
       case "7310973":
         return new Tile({
           type: "grass",
@@ -103,36 +96,29 @@ class TileFactory {
         });
       case "12010899":
         return new Tile({
-          type: "grass",
+          type: "well",
           spriteSheet: sprites.texture_sheet_grass,
           canAlt: true,
           isGround: true,
           colision: false,
           isAlt: isAlt,
-          content: new TileContent({
-            type: "well",
-            spriteSheet: sprites.texture_sheet_well,
-            isAlt: isAlt,
-            canAlt: false,
-            canBeTaken: false,
-            colision: true,
-          }),
+          content: new Well(isAlt),
         });
       case "128115106":
-        return new Tile({
-          type: "well_hole",
-          spriteSheet: sprites.void,
-          canAlt: true,
-          isGround: false,
-          colision: true,
-          isAlt: isAlt,
-        });
-
+        return new WellHole();
       case "1095453":
         return new Tile({
           type: "dirt_pit",
           spriteSheet: sprites.texture_sheet_dirt_pit,
           canAlt: true,
+          isGround: true,
+          colision: false,
+          isAlt: isAlt,
+        });
+      case "906660":
+        return new Tile({
+          type: "dirt",
+          spriteSheet: sprites.texture_sheet_dirt,
           isGround: true,
           colision: false,
           isAlt: isAlt,

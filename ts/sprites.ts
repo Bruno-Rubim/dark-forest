@@ -62,6 +62,9 @@ export const sprites = {
   texture_sheet_key: new Sprite("texture_sheet_key"),
   texture_sheet_well: new Sprite("texture_sheet_well"),
   texture_sheet_well_bucket: new Sprite("texture_sheet_well_bucket"),
+  texture_sheet_well_down: new Sprite("texture_sheet_well_down"),
+  texture_sheet_well_hole_down: new Sprite("texture_sheet_well_hole_down"),
+  texture_sheet_well_hole_mid: new Sprite("texture_sheet_well_hole_mid"),
   texture_sheet_bucket: new Sprite("texture_sheet_bucket"),
 };
 
