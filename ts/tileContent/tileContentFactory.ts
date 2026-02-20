@@ -1,8 +1,14 @@
 import { sprites } from "../sprites.js";
 import { TileContent } from "./tileContent.js";
+import Trapdoor from "./trapdoor.js";
 
 class TileContentFactory {
-  createTileContent(colorValue: string, isAlt: boolean): TileContent | null {
+  createTileContent(
+    colorValue: string,
+    isAlt: boolean,
+    x: number,
+    y: number,
+  ): TileContent | null | undefined {
     switch (colorValue) {
       case "1389041":
         return new TileContent({
@@ -18,7 +24,6 @@ class TileContentFactory {
           colision: true,
           isAlt: isAlt,
           canBeTaken: false,
-          placedOn: ["brick_ground"],
         });
       case "91531":
         return new TileContent({
@@ -34,7 +39,6 @@ class TileContentFactory {
           colision: true,
           isAlt: isAlt,
           canBeTaken: false,
-          placedOn: ["brick_ground"],
         });
 
       case "7310973":
@@ -76,11 +80,30 @@ class TileContentFactory {
           canBeTaken: true,
           colision: true,
         });
+      case "12810251":
+        return new TileContent({
+          type: "ladder",
+          spriteSheet: sprites.texture_sheet_ladder,
+          placedOn: ["grass", "brick_ground0", "sewer_rock_ground"],
+          isAlt: false,
+          canAlt: false,
+          canBeTaken: true,
+          colision: true,
+        });
+      case "1105325":
+        return new Trapdoor(0, x, y);
+      case "1255419":
+        return new Trapdoor(1, x, y);
+      case "1467336":
+        return new Trapdoor(2, x, y);
+      case "1196944":
+        return new Trapdoor(3, x, y);
+
       case "000":
         return null;
     }
     console.warn(colorValue + " not in table");
-    return null;
+    return undefined;
   }
 }
 

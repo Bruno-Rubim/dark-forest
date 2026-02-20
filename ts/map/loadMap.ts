@@ -1,6 +1,6 @@
 import { gameState } from "../gameState.js";
 import type { Tile } from "../tile/tile.js";
-import { tileContentFactory } from "../tile/tileContentFactory.js";
+import { tileContentFactory } from "../tileContent/tileContentFactory.js";
 import { tileFactory } from "../tile/tileFactory.js";
 
 async function loadMapFromImage(
@@ -41,7 +41,12 @@ function handleTile(
   const colorValue = "" + r + g + b;
 
   const alt = x % 2 == y % 2;
-  map[y][x] = tileFactory.createTile(colorValue, alt);
+  let tile = tileFactory.createTile(colorValue, alt, "" + x + y);
+  if (tile === undefined) {
+    console.warn(x + " " + y);
+    tile = null;
+  }
+  map[y][x] = tile;
 }
 
 function handleTileContent(
@@ -59,7 +64,10 @@ function handleTileContent(
   const colorValue = "" + r + g + b;
 
   const alt = x % 2 == y % 2;
-  const content = tileContentFactory.createTileContent(colorValue, alt);
+  const content = tileContentFactory.createTileContent(colorValue, alt, x, y);
+  if (content === undefined) {
+    console.warn(x + " " + y);
+  }
   if (content) {
     map[y][x].content = content;
   }

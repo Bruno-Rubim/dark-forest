@@ -6,7 +6,7 @@ import type { Sprite } from "../sprites.js";
 import {
   altTileSheetPosList,
   tileSheetPosList,
-} from "./textureSheetMapping.js";
+} from "../tile/textureSheetMapping.js";
 
 export class TileContent {
   spriteSheet: Sprite | null;

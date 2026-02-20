@@ -1,9 +1,15 @@
 import { sprites } from "../sprites.js";
 import { Tile } from "./tile.js";
-import { TileContent } from "./tileContent.js";
+import { TileContent } from "../tileContent/tileContent.js";
+import Well from "../tileContent/well.js";
+import { WellHole } from "./wellHole.js";
 
 class TileFactory {
-  createTile(colorValue: string, isAlt: boolean): Tile | null {
+  createTile(
+    colorValue: string,
+    isAlt: boolean,
+    xy: string,
+  ): Tile | null | undefined {
     switch (colorValue) {
       case "146146146":
         return new Tile({
@@ -27,7 +33,7 @@ class TileFactory {
         });
       case "28140":
         return new Tile({
-          type: "sewer_rock_ceiling",
+          type: "sewer_rock_ground",
           spriteSheet: sprites.texture_sheet_sewer_rock_ceiling,
           shadowSpriteSheet: sprites.texture_sheet_shadow_ceiling,
           canAlt: true,
@@ -47,7 +53,7 @@ class TileFactory {
         });
       case "1827336":
         return new Tile({
-          type: "brick_ceiling",
+          type: "brick_ground",
           spriteSheet: sprites.texture_sheet_brick_ceiling,
           shadowSpriteSheet: sprites.texture_sheet_shadow_top_block,
           canAlt: true,
@@ -75,15 +81,6 @@ class TileFactory {
           colision: false,
           isAlt: isAlt,
         });
-      case "906660":
-        return new Tile({
-          type: "dirt",
-          spriteSheet: sprites.texture_sheet_dirt,
-          isGround: true,
-          colision: false,
-          isAlt: isAlt,
-        });
-
       case "7310973":
         return new Tile({
           type: "grass",
@@ -103,36 +100,29 @@ class TileFactory {
         });
       case "12010899":
         return new Tile({
-          type: "grass",
+          type: "well",
           spriteSheet: sprites.texture_sheet_grass,
           canAlt: true,
           isGround: true,
           colision: false,
           isAlt: isAlt,
-          content: new TileContent({
-            type: "well",
-            spriteSheet: sprites.texture_sheet_well,
-            isAlt: isAlt,
-            canAlt: false,
-            canBeTaken: false,
-            colision: true,
-          }),
+          content: new Well(isAlt),
         });
       case "128115106":
-        return new Tile({
-          type: "well_hole",
-          spriteSheet: sprites.void,
-          canAlt: true,
-          isGround: false,
-          colision: true,
-          isAlt: isAlt,
-        });
-
+        return new WellHole();
       case "1095453":
         return new Tile({
           type: "dirt_pit",
           spriteSheet: sprites.texture_sheet_dirt_pit,
           canAlt: true,
+          isGround: true,
+          colision: false,
+          isAlt: isAlt,
+        });
+      case "906660":
+        return new Tile({
+          type: "dirt",
+          spriteSheet: sprites.texture_sheet_dirt,
           isGround: true,
           colision: false,
           isAlt: isAlt,
@@ -186,7 +176,7 @@ class TileFactory {
         });
     }
     console.warn(colorValue + " not in table");
-    return null;
+    return undefined;
   }
 }
 

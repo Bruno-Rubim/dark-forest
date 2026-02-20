@@ -1,4 +1,5 @@
 import Position from "./gameElements/position.js";
+import { gameState } from "./gameState.js";
 import {
   EAST,
   LEFT,
@@ -9,7 +10,8 @@ import {
   type Cardinals,
 } from "./global.js";
 import type { Tile } from "./tile/tile.js";
-import type { TileContent } from "./tile/tileContent.js";
+import type { TileContent } from "./tileContent/tileContent.js";
+import Trapdoor from "./tileContent/trapdoor.js";
 
 export class Player {
   pos: Position;
@@ -84,24 +86,28 @@ export class Player {
         tile = this.getBlockAdj(NORTH, map);
         if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(0, -1);
+          return tile;
         }
         break;
       case SOUTH:
         tile = this.getBlockAdj(SOUTH, map);
         if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(0, 1);
+          return tile;
         }
         break;
       case EAST:
         tile = this.getBlockAdj(EAST, map);
         if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(1, 0);
+          return tile;
         }
         break;
       case WEST:
         tile = this.getBlockAdj(WEST, map);
         if (tile?.colision != true && tile?.content?.colision != true) {
           this.pos = this.pos.add(-1, 0);
+          return tile;
         }
         break;
     }
