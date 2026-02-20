@@ -2,6 +2,8 @@ import { sprites } from "../sprites.js";
 import { TileContent } from "./tileContent.js";
 import Trapdoor from "./trapdoor.js";
 
+const genericGround = ["grass", "brick_ground", "sewer_rock_ground"];
+
 class TileContentFactory {
   createTileContent(
     colorValue: string,
@@ -64,7 +66,7 @@ class TileContentFactory {
         return new TileContent({
           type: "key",
           spriteSheet: sprites.texture_sheet_key,
-          placedOn: ["grass"],
+          placedOn: genericGround,
           isAlt: false,
           canAlt: false,
           canBeTaken: true,
@@ -74,7 +76,7 @@ class TileContentFactory {
         return new TileContent({
           type: "bucket",
           spriteSheet: sprites.texture_sheet_bucket,
-          placedOn: ["grass"],
+          placedOn: genericGround,
           isAlt: false,
           canAlt: false,
           canBeTaken: true,
@@ -84,7 +86,7 @@ class TileContentFactory {
         return new TileContent({
           type: "ladder",
           spriteSheet: sprites.texture_sheet_ladder,
-          placedOn: ["grass", "brick_ground0", "sewer_rock_ground"],
+          placedOn: genericGround,
           isAlt: false,
           canAlt: false,
           canBeTaken: true,
