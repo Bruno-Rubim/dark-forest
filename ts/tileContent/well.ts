@@ -30,7 +30,13 @@ export default class Well extends TileContent {
     if (!wellState.bucket) {
       return item;
     }
-    if (item == null) {
+    if (item == null || (wellState.ready && wellState.height != 0)) {
+      if (!wellState.ready) {
+        wellState.ready = true;
+        const retItem = wellState.holding;
+        wellState.holding = item;
+        return retItem;
+      }
       if (wellState.dir == DOWN) {
         if (wellState.height > -3) {
           wellState.height--;
@@ -41,14 +47,23 @@ export default class Well extends TileContent {
       } else {
         if (wellState.height < 0) {
           wellState.height++;
+          if (wellState.height == 0) {
+            wellState.ready = false;
+          }
         } else {
           wellState.height--;
           wellState.dir = DOWN;
         }
       }
-      return null;
+      return item;
     }
-    return null;
+    if (item.placedOn.includes("well")) {
+      const retItem = wellState.holding;
+      wellState.holding = item;
+      wellState.ready = true;
+      return retItem;
+    }
+    return item;
   }
 
   render(queueNum: number, invert: boolean): void {
@@ -86,5 +101,13 @@ export default class Well extends TileContent {
       128,
       drawAlt,
     );
+
+    if (
+      gameState.well.holding &&
+      gameState.well.height == 0 &&
+      queueNum == 19
+    ) {
+      gameState.well.holding.render(26, false);
+    }
   }
 }

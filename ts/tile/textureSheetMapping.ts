@@ -32,6 +32,7 @@ export const tileSheetPosList: Position[] = [
   new Position(1, 0),
 
   new Position(7, 3),
+  new Position(6, 3),
 ];
 
 export const altTileSheetPosList: Position[] = [
