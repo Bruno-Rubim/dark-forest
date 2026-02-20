@@ -7,15 +7,17 @@ import { gameState } from "./gameState.js";
 import { sprites } from "./sprites.js";
 import { loadMap } from "./map/loadMap.js";
 import { overworld, underground } from "./map/maps.js";
+import Well from "./tileContent/well.js";
+import Trapdoor from "./tileContent/trapdoor.js";
 export default class GameManager {
     mapLoaded = false;
     constructor() {
         bindListeners(canvasManager.canvasElement);
         loadMap(overworld, "overworld").then(() => {
             this.mapLoaded = true;
-            gameState.currentMap = overworld;
         });
         loadMap(underground, "underground").then(() => { });
+        gameState.currentMap = overworld;
     }
     interaction() {
         const tilePos = gameState.player.frontCoords;
@@ -26,10 +28,40 @@ export default class GameManager {
             tile.content = null;
             return;
         }
-        if (tile.content?.type == "well" && held?.type == "bucket") {
-            gameState.player.holding = null;
-            tile.content.type = "well_bucket";
-            tile.content.spriteSheet = sprites.texture_sheet_well_bucket;
+        if (tile.content instanceof Trapdoor) {
+            if (held?.type == "key") {
+                gameState.player.holding = null;
+                gameState.trapdoors[tile.content.id].open = true;
+            }
+            if (held?.type == "ladder") {
+                if (!tile.content.open) {
+                    return;
+                }
+                if (gameState.currentMap == overworld) {
+                    gameState.currentMap = underground;
+                }
+                else {
+                    gameState.currentMap = overworld;
+                }
+                switch (tile.content.facing) {
+                    case 0:
+                        gameState.player.pos = gameState.player.pos.add(0, 2);
+                        break;
+                    case 1:
+                        gameState.player.pos = gameState.player.pos.add(2, 0);
+                        break;
+                    case 2:
+                        gameState.player.pos = gameState.player.pos.add(0, -2);
+                        break;
+                    case 3:
+                        gameState.player.pos = gameState.player.pos.add(-2, 0);
+                        break;
+                }
+            }
+            return;
+        }
+        if (tile.content instanceof Well) {
+            gameState.player.holding = tile.content.interact(held);
             return;
         }
         if ((tile.content && !tile.content?.canBeTaken) ||
@@ -75,40 +107,34 @@ export default class GameManager {
             inputState.keyboard.Escape = "read";
             return;
         }
+        let movedTile = null;
         if (inputState.keyboard.w == "pressed") {
             inputState.keyboard.w = "read";
-            gameState.player.move(gameState.player.frontCard, gameState.currentMap);
-            return;
+            movedTile = gameState.player.move(gameState.player.frontCard, gameState.currentMap);
         }
         if (inputState.keyboard.s == "pressed") {
             inputState.keyboard.s = "read";
-            gameState.player.move(gameState.player.backCard, gameState.currentMap);
-            return;
+            movedTile = gameState.player.move(gameState.player.backCard, gameState.currentMap);
         }
         if (inputState.keyboard.q == "pressed") {
             inputState.keyboard.q = "read";
-            gameState.player.move(gameState.player.leftCard, gameState.currentMap);
-            return;
+            movedTile = gameState.player.move(gameState.player.leftCard, gameState.currentMap);
         }
         if (inputState.keyboard.e == "pressed") {
             inputState.keyboard.e = "read";
-            gameState.player.move(gameState.player.rightCard, gameState.currentMap);
-            return;
+            movedTile = gameState.player.move(gameState.player.rightCard, gameState.currentMap);
         }
         if (inputState.keyboard.a == "pressed") {
             inputState.keyboard.a = "read";
             gameState.player.turn(LEFT);
-            return;
         }
         if (inputState.keyboard.d == "pressed") {
             inputState.keyboard.d = "read";
             gameState.player.turn(RIGHT);
-            return;
         }
         if (inputState.keyboard[" "] == "pressed") {
             inputState.keyboard[" "] = "read";
             this.interaction();
-            return;
         }
     }
     get tileView() {

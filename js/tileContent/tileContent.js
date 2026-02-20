@@ -2,34 +2,30 @@ import { canvasManager } from "../canvasManager.js";
 import Position from "../gameElements/position.js";
 import { gameState } from "../gameState.js";
 import { GAMEHEIGHT, GAMEWIDTH } from "../global.js";
-import {} from "../sprites.js";
-import { altTileSheetPosList, tileSheetPosList, } from "./textureSheetMapping.js";
-import { TileContent } from "../tileContent/tileContent.js";
-export class Tile {
+import { altTileSheetPosList, tileSheetPosList, } from "../tile/textureSheetMapping.js";
+export class TileContent {
     spriteSheet;
-    shadowSpriteSheet;
-    canAlt;
     colision;
     isAlt;
-    content;
-    isGround;
     type;
+    canBeTaken;
+    canAlt;
+    placedOn;
     directionSprites;
     facing;
     constructor(args) {
-        this.spriteSheet = args.spriteSheet ?? null;
-        this.colision = args.colision;
-        this.isAlt = args.isAlt;
-        this.isGround = args.isGround;
         this.type = args.type;
+        this.spriteSheet = args.spriteSheet ?? null;
+        this.isAlt = args.isAlt;
+        this.colision = args.colision;
+        this.canBeTaken = args.canBeTaken;
+        this.canAlt = args.canAlt ?? false;
+        this.placedOn = args.placedOn ?? [];
         this.directionSprites = args.directionSprites ?? null;
         if (this.spriteSheet == null && this.directionSprites == null) {
             alert(`${args.type} doesn't have sprite sheets`);
         }
         this.facing = args.facing ?? 0;
-        this.shadowSpriteSheet = args.shadowSpriteSheet ?? null;
-        this.canAlt = args.canAlt ?? false;
-        this.content = args.content ?? null;
     }
     render(queueNum, invert) {
         let sheetPos = tileSheetPosList[queueNum];
@@ -64,8 +60,5 @@ export class Tile {
             return;
         }
         canvasManager.renderSpriteFromSheet(spriteSheet, new Position(), GAMEWIDTH, GAMEHEIGHT, sheetPos, 128, 128, drawAlt);
-        if (this.shadowSpriteSheet) {
-            canvasManager.renderSpriteFromSheet(this.shadowSpriteSheet, new Position(), GAMEWIDTH, GAMEHEIGHT, sheetPos, 128, 128, drawAlt);
-        }
     }
 }

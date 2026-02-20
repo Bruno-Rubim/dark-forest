@@ -1,5 +1,7 @@
 import Position from "./gameElements/position.js";
+import { gameState } from "./gameState.js";
 import { EAST, LEFT, NORTH, RIGHT, SOUTH, WEST, } from "./global.js";
+import Trapdoor from "./tileContent/trapdoor.js";
 export class Player {
     pos;
     facing = 0;
@@ -65,24 +67,28 @@ export class Player {
                 tile = this.getBlockAdj(NORTH, map);
                 if (tile?.colision != true && tile?.content?.colision != true) {
                     this.pos = this.pos.add(0, -1);
+                    return tile;
                 }
                 break;
             case SOUTH:
                 tile = this.getBlockAdj(SOUTH, map);
                 if (tile?.colision != true && tile?.content?.colision != true) {
                     this.pos = this.pos.add(0, 1);
+                    return tile;
                 }
                 break;
             case EAST:
                 tile = this.getBlockAdj(EAST, map);
                 if (tile?.colision != true && tile?.content?.colision != true) {
                     this.pos = this.pos.add(1, 0);
+                    return tile;
                 }
                 break;
             case WEST:
                 tile = this.getBlockAdj(WEST, map);
                 if (tile?.colision != true && tile?.content?.colision != true) {
                     this.pos = this.pos.add(-1, 0);
+                    return tile;
                 }
                 break;
         }

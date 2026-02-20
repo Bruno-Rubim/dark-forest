@@ -44,9 +44,17 @@ export const sprites = {
     texture_sheet_tree: new Sprite("texture_sheet_tree"),
     texture_sheet_flower: new Sprite("texture_sheet_flower"),
     texture_sheet_key: new Sprite("texture_sheet_key"),
+    texture_sheet_ladder: new Sprite("texture_sheet_ladder"),
     texture_sheet_well: new Sprite("texture_sheet_well"),
     texture_sheet_well_bucket: new Sprite("texture_sheet_well_bucket"),
+    texture_sheet_well_down: new Sprite("texture_sheet_well_down"),
+    texture_sheet_well_hole_down: new Sprite("texture_sheet_well_hole_down"),
+    texture_sheet_well_hole_mid: new Sprite("texture_sheet_well_hole_mid"),
     texture_sheet_bucket: new Sprite("texture_sheet_bucket"),
+    texture_sheet_trapdoor_open: new Sprite("texture_sheet_trapdoor_open"),
+    texture_sheet_trapdoor_closed: new Sprite("texture_sheet_trapdoor_closed"),
+    texture_sheet_trapdoor_ceiling_open: new Sprite("texture_sheet_trapdoor_ceiling_open"),
+    texture_sheet_trapdoor_ceiling_closed: new Sprite("texture_sheet_trapdoor_ceiling_closed"),
 };
 const spriteArr = Object.values(sprites);
 const promises = spriteArr.map((sprite) => sprite.load());
