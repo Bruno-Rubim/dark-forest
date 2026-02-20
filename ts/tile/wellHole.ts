@@ -3,6 +3,7 @@ import Position from "../gameElements/position.js";
 import { gameState } from "../gameState.js";
 import { GAMEHEIGHT, GAMEWIDTH } from "../global.js";
 import { sprites } from "../sprites.js";
+import type { TileContent } from "../tileContent/tileContent.js";
 import { tileSheetPosList } from "./textureSheetMapping.js";
 import { Tile } from "./tile.js";
 
@@ -43,5 +44,27 @@ export class WellHole extends Tile {
       128,
       128,
     );
+
+    if (
+      gameState.well.holding &&
+      gameState.well.height == -2 &&
+      queueNum == 19
+    ) {
+      gameState.well.holding.render(26, false);
+    }
+  }
+
+  interact(item: TileContent | null) {
+    const wellState = gameState.well;
+    if (!wellState.bucket) {
+      return item;
+    }
+    if (!item || item.placedOn.includes("well")) {
+      const retItem = wellState.holding;
+      wellState.holding = item;
+      console.log(retItem);
+      return retItem;
+    }
+    return item;
   }
 }

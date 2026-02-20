@@ -3,7 +3,6 @@ import { DOWN, UP } from "./global.js";
 import { Player } from "./player.js";
 import type { Tile } from "./tile/tile.js";
 import type { TileContent } from "./tileContent/tileContent.js";
-import type Trapdoor from "./tileContent/trapdoor.js";
 
 // Holds the current state of the game at any given time
 export default class GameState {
