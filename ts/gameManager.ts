@@ -44,9 +44,35 @@ export default class GameManager {
       tile.content = null;
       return;
     }
-    if (tile.content instanceof Trapdoor && held?.type == "key") {
-      gameState.player.holding = tile.content.interact(held);
-      gameState.trapdoors[tile.content.id]!.open = true;
+    if (tile.content instanceof Trapdoor) {
+      if (held?.type == "key") {
+        gameState.player.holding = null;
+        gameState.trapdoors[tile.content.id]!.open = true;
+      }
+      if (held?.type == "ladder") {
+        if (!tile.content.open) {
+          return;
+        }
+        if (gameState.currentMap == overworld) {
+          gameState.currentMap = underground;
+        } else {
+          gameState.currentMap = overworld;
+        }
+        switch (tile.content.facing) {
+          case 0:
+            gameState.player.pos = gameState.player.pos.add(0, 2);
+            break;
+          case 1:
+            gameState.player.pos = gameState.player.pos.add(2, 0);
+            break;
+          case 2:
+            gameState.player.pos = gameState.player.pos.add(0, -2);
+            break;
+          case 3:
+            gameState.player.pos = gameState.player.pos.add(-2, 0);
+            break;
+        }
+      }
       return;
     }
     if (tile.content instanceof Well) {
@@ -154,14 +180,6 @@ export default class GameManager {
     if (inputState.keyboard[" "] == "pressed") {
       inputState.keyboard[" "] = "read";
       this.interaction();
-    }
-
-    if (movedTile?.content instanceof Trapdoor && movedTile.content.open) {
-      if (gameState.currentMap == overworld) {
-        gameState.currentMap = underground;
-      } else {
-        gameState.currentMap = overworld;
-      }
     }
   }
 

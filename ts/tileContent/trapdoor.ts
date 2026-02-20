@@ -13,19 +13,18 @@ import { TileContent } from "./tileContent.js";
 export default class Trapdoor extends TileContent {
   id: string;
 
-  constructor(id: string) {
+  constructor(facing: number, x: number, y: number) {
     super({
       type: "trapdoor_closed",
       spriteSheet: sprites.texture_sheet_trapdoor_closed,
       isAlt: false,
       canAlt: false,
       canBeTaken: false,
-      colision: false,
+      colision: true,
+      facing: facing,
     });
-    this.id = id;
-    if (!gameState.trapdoors[this.id]) {
-      gameState.trapdoors[this.id] = { open: false };
-    }
+    this.id = x + "," + y;
+    gameState.trapdoors[this.id] = { open: false };
   }
 
   get open() {
@@ -70,15 +69,5 @@ export default class Trapdoor extends TileContent {
       128,
       128,
     );
-  }
-
-  interact(item: TileContent | null) {
-    if (item?.type == "key" && !this.open) {
-      this.spriteSheet = sprites.texture_sheet_trapdoor_open;
-      gameState.trapdoors[this.id]!.open = true;
-      this.colision = false;
-      return null;
-    }
-    return item;
   }
 }

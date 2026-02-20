@@ -33,7 +33,7 @@ class TileFactory {
         });
       case "28140":
         return new Tile({
-          type: "sewer_rock_ceiling",
+          type: "sewer_rock_ground",
           spriteSheet: sprites.texture_sheet_sewer_rock_ceiling,
           shadowSpriteSheet: sprites.texture_sheet_shadow_ceiling,
           canAlt: true,
@@ -53,7 +53,7 @@ class TileFactory {
         });
       case "1827336":
         return new Tile({
-          type: "brick_ceiling",
+          type: "brick_ground",
           spriteSheet: sprites.texture_sheet_brick_ceiling,
           shadowSpriteSheet: sprites.texture_sheet_shadow_top_block,
           canAlt: true,

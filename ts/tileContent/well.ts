@@ -28,7 +28,7 @@ export default class Well extends TileContent {
       return null;
     }
     if (!wellState.bucket) {
-      return null;
+      return item;
     }
     if (item == null) {
       if (wellState.dir == DOWN) {

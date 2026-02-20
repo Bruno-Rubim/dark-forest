@@ -6,7 +6,8 @@ class TileContentFactory {
   createTileContent(
     colorValue: string,
     isAlt: boolean,
-    xy: string,
+    x: number,
+    y: number,
   ): TileContent | null | undefined {
     switch (colorValue) {
       case "1389041":
@@ -23,7 +24,6 @@ class TileContentFactory {
           colision: true,
           isAlt: isAlt,
           canBeTaken: false,
-          placedOn: ["brick_ground"],
         });
       case "91531":
         return new TileContent({
@@ -39,7 +39,6 @@ class TileContentFactory {
           colision: true,
           isAlt: isAlt,
           canBeTaken: false,
-          placedOn: ["brick_ground"],
         });
 
       case "7310973":
@@ -81,8 +80,25 @@ class TileContentFactory {
           canBeTaken: true,
           colision: true,
         });
+      case "12810251":
+        return new TileContent({
+          type: "ladder",
+          spriteSheet: sprites.texture_sheet_ladder,
+          placedOn: ["grass", "brick_ground0", "sewer_rock_ground"],
+          isAlt: false,
+          canAlt: false,
+          canBeTaken: true,
+          colision: true,
+        });
+      case "1105325":
+        return new Trapdoor(0, x, y);
+      case "1255419":
+        return new Trapdoor(1, x, y);
       case "1467336":
-        return new Trapdoor(xy);
+        return new Trapdoor(2, x, y);
+      case "1196944":
+        return new Trapdoor(3, x, y);
+
       case "000":
         return null;
     }

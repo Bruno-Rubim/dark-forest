@@ -64,11 +64,7 @@ function handleTileContent(
   const colorValue = "" + r + g + b;
 
   const alt = x % 2 == y % 2;
-  const content = tileContentFactory.createTileContent(
-    colorValue,
-    alt,
-    "" + x + y,
-  );
+  const content = tileContentFactory.createTileContent(colorValue, alt, x, y);
   if (content === undefined) {
     console.warn(x + " " + y);
   }
