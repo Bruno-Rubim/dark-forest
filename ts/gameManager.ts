@@ -32,6 +32,7 @@ export default class GameManager {
     loadMap(overworld, "overworld").then(() => {
       this.mapLoaded = true;
       gameState.currentMap = overworld;
+      gameState.player.pos.update(30, 32);
     });
     loadMap(underground, "underground").then(() => {
       // this.mapLoaded = true;
@@ -81,7 +82,6 @@ export default class GameManager {
       return;
     }
     if (tile instanceof WellHole) {
-      console.log("well hole");
       gameState.player.holding = tile.interact(held);
       return;
     }
@@ -308,5 +308,13 @@ export default class GameManager {
     }
     this.renderTileView();
     gameState.player.holding?.render(25, false);
+    if (gameState.currentMap == underground) {
+      canvasManager.renderSprite(
+        sprites.overlay_dark,
+        new Position(),
+        GAMEWIDTH,
+        GAMEHEIGHT,
+      );
+    }
   }
 }

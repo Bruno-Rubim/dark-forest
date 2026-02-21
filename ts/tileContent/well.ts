@@ -31,7 +31,7 @@ export default class Well extends TileContent {
       return item;
     }
     if (item == null || (wellState.ready && wellState.height != 0)) {
-      if (!wellState.ready) {
+      if (!wellState.ready && (item != null || wellState.holding != null)) {
         wellState.ready = true;
         const retItem = wellState.holding;
         wellState.holding = item;

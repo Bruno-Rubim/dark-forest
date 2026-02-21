@@ -56,7 +56,7 @@ class TileContentFactory {
         return new TileContent({
           type: "flower",
           spriteSheet: sprites.texture_sheet_flower,
-          placedOn: ["dirt_pit", "grass", "well"],
+          placedOn: ["dirt_pit", "grass", "well", "sewer_rock_ground"],
           isAlt: false,
           canAlt: false,
           canBeTaken: true,

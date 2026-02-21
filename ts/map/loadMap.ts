@@ -90,10 +90,6 @@ export async function loadMapTiles(map: (Tile | null)[][], name: string) {
       }
     },
   );
-  gameState.player.pos.update(
-    Math.floor(map[0]!.length / 2),
-    Math.floor(map.length / 2),
-  );
 }
 
 export async function loadMapContent(map: (Tile | null)[][], name: string) {

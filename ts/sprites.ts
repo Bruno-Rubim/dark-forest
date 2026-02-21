@@ -25,6 +25,7 @@ export const sprites = {
   "9s": new Sprite("9s"),
   void: new Sprite("void"),
 
+  overlay_dark: new Sprite("overlay_dark"),
   ground_shadow: new Sprite("ground_shadow"),
 
   texture_sheet_shadow_block: new Sprite("texture_sheet_shadow_block"),

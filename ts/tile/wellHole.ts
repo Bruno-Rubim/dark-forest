@@ -59,10 +59,12 @@ export class WellHole extends Tile {
     if (!wellState.bucket) {
       return item;
     }
-    if (!item || item.placedOn.includes("well")) {
+    if (
+      (!item || item.placedOn.includes("well")) &&
+      gameState.well.height == -2
+    ) {
       const retItem = wellState.holding;
       wellState.holding = item;
-      console.log(retItem);
       return retItem;
     }
     return item;
